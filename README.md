@@ -1,5 +1,7 @@
 # Luz en Movimiento — Reflexión y Refracción
 
+**Live site:** https://fisica.5touni.workers.dev
+
 Interactive web project about the **reflection and refraction of light**, built for a high-school physics course
 (5to UNI · Física · IV Bimestre). It is meant to be projected in class: students open it on their phones by scanning the
 QR code shown on the first screen.
