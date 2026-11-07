@@ -11,18 +11,18 @@ QR code shown on the first screen.
 
 ## What it includes
 
-| Section | What the user can do |
-|---|---|
-| Hero | 3D glass prism that follows the pointer (2D fallback without WebGL), QR code to open the site |
-| Team | Member cards (placeholders only appear in development) |
-| History | Timeline from Euclid to Newton (horizontal on desktop, vertical and scroll-revealed on phones) |
-| Key ideas | Reflection, refraction and total internal reflection, with animated ray diagrams |
-| Prism lab | Scroll-driven story + draggable prism and laser, white-light dispersion, Newton's two-prism experiment |
-| Applications | Real-life uses (rainbow, optical fiber, mirages, lenses…) |
-| Experiment | Virtual protractor lab (water / mystery material) and the real water experiment with results table, CSV export and photos |
-| Simulator | Light lab: media, angle and color, critical angle, total internal reflection, glass slab |
-| Problems | Four solved problems with instant feedback and saved progress |
-| Conclusions · References | Wrap-up and sources |
+| Section                  | What the user can do                                                                                                      |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------- |
+| Hero                     | 3D glass prism that follows the pointer (2D fallback without WebGL), QR code to open the site                             |
+| Team                     | Member cards (placeholders only appear in development)                                                                    |
+| History                  | Timeline from Euclid to Newton (horizontal on desktop, vertical and scroll-revealed on phones)                            |
+| Key ideas                | Reflection, refraction and total internal reflection, with animated ray diagrams                                          |
+| Prism lab                | Scroll-driven story + draggable prism and laser, white-light dispersion, Newton's two-prism experiment                    |
+| Applications             | Real-life uses (rainbow, optical fiber, mirages, lenses…)                                                                 |
+| Experiment               | Virtual protractor lab (water / mystery material) and the real water experiment with results table, CSV export and photos |
+| Simulator                | Light lab: media, angle and color, critical angle, total internal reflection, glass slab                                  |
+| Problems                 | Four solved problems with instant feedback and saved progress                                                             |
+| Conclusions · References | Wrap-up and sources                                                                                                       |
 
 Extras: light/dark theme, compact navigation, **presentation mode** (one full-screen slide per section, keyboard
 navigation, stopwatch) and fullscreen.
@@ -54,20 +54,20 @@ npm run preview    # serve the production build locally
 
 ## Configuration
 
-| Variable | Default | Purpose |
-|---|---|---|
-| `VITE_SITE_URL` | `https://fisica.uni.workers.dev` | Public address shown in the hero and encoded in the QR code |
+| Variable        | Default                             | Purpose                                                     |
+| --------------- | ----------------------------------- | ----------------------------------------------------------- |
+| `VITE_SITE_URL` | `https://fisica.5touni.workers.dev` | Public address shown in the hero and encoded in the QR code |
 
 Copy `.env.example` to `.env` to override it. Only `VITE_`-prefixed variables reach the browser: never store secrets
 there. Course data (classroom, week, term…) lives in `src/config/site.js`.
 
 ## Scripts
 
-| Command | What it does |
-|---|---|
-| `npm test` | Runs the unit, content, architecture and renderer tests (`tests/`) |
-| `npm run check` | Bundles the app in memory to catch syntax errors, unresolved imports and missing exports (uses the esbuild that ships with Vite) |
-| `npm run verify` | `test` + `check` + `build`: run it before every commit/deploy |
+| Command          | What it does                                                                                                                     |
+| ---------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| `npm test`       | Runs the unit, content, architecture and renderer tests (`tests/`)                                                               |
+| `npm run check`  | Bundles the app in memory to catch syntax errors, unresolved imports and missing exports (uses the esbuild that ships with Vite) |
+| `npm run verify` | `test` + `check` + `build`: run it before every commit/deploy                                                                    |
 
 ## Project structure
 
@@ -100,16 +100,16 @@ See **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)** for diagrams, module contra
 
 Nothing about the physics needs to change to edit the site; everything editable is in `src/content` and `src/config`:
 
-| To change… | Edit |
-|---|---|
-| Team members (name, role, photo in `public/equipo/`) | `src/content/team.js` |
-| Course info (classroom, week, term, topic) and public URL | `src/config/site.js` / `.env` |
-| History timeline | `src/content/history.js` (keep it chronological; exactly one event has `highlight: true`) |
-| Key ideas, applications, conclusions, references | `theory.js`, `applications.js`, `conclusions.js`, `references.js` |
-| Solved problems | `src/content/problems.js` (answers are computed with the physics module, so statement and solution stay consistent) |
-| Experiment steps and materials | `src/content/experiment.js` |
-| Prism-lab story steps | `src/content/prismLab.js` |
-| Ready-made simulator cases | `src/features/simulator/scenarios.js` |
+| To change…                                                | Edit                                                                                                                |
+| --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| Team members (name, role, photo in `public/equipo/`)      | `src/content/team.js`                                                                                               |
+| Course info (classroom, week, term, topic) and public URL | `src/config/site.js` / `.env`                                                                                       |
+| History timeline                                          | `src/content/history.js` (keep it chronological; exactly one event has `highlight: true`)                           |
+| Key ideas, applications, conclusions, references          | `theory.js`, `applications.js`, `conclusions.js`, `references.js`                                                   |
+| Solved problems                                           | `src/content/problems.js` (answers are computed with the physics module, so statement and solution stay consistent) |
+| Experiment steps and materials                            | `src/content/experiment.js`                                                                                         |
+| Prism-lab story steps                                     | `src/content/prismLab.js`                                                                                           |
+| Ready-made simulator cases                                | `src/features/simulator/scenarios.js`                                                                               |
 
 `npm test` validates the content (valid icons, chronological history, consistent navigation, etc.).
 
