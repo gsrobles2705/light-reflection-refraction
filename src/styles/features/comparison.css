@@ -1,0 +1,34 @@
+:root{--h-comparacion:#d4e157}
+#comparacion{--c:var(--h-comparacion)}
+.cmp{display:grid;gap:10px;margin-top:28px}
+.cmp-row{display:grid;grid-template-columns:minmax(120px,.7fr) repeat(2,minmax(0,1.3fr));gap:10px;align-items:stretch}
+.cmp-th{padding:14px 20px;border-radius:16px;font:800 1.2rem "Bricolage Grotesque",system-ui,sans-serif;color:var(--ink);background:color-mix(in srgb,var(--c) 24%,transparent);border-bottom:4px solid var(--c)}
+.cmp-q{display:flex;align-items:center;padding:0 6px;font:700 .82rem "Instrument Sans",sans-serif;text-transform:uppercase;letter-spacing:.07em;color:var(--mute)}
+.cmp-cell{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;padding:14px 20px;border-radius:16px;background:color-mix(in srgb,var(--c) 8%,var(--surf));border:1px solid color-mix(in srgb,var(--c) 30%,var(--line));font-weight:600;line-height:1.4;color:var(--ink);transition:transform .25s cubic-bezier(.23,1,.32,1),border-color .25s}
+.cmp-cell:hover{transform:translateY(-2px);border-color:var(--c)}
+.cmp-cell .eq{margin:0;font-size:1.05rem;padding:3px 10px}
+.cmp-flag{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:99px;font:800 .8rem "Instrument Sans",sans-serif}
+.cmp-flag.yes{background:color-mix(in srgb,#3fe3a0 24%,transparent);color:var(--ink)}
+.cmp-flag.no{background:color-mix(in srgb,var(--mute) 22%,transparent);color:var(--mute)}
+.cmp-title{margin:36px 0 14px;font-size:1.3rem}
+.cmp-sum{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.cmp-card{padding:18px 20px;border-radius:18px;background:color-mix(in srgb,var(--c) 8%,var(--surf));border:1px solid var(--line);border-top:4px solid var(--c);display:grid;gap:8px;align-content:start}
+.cmp-card p{margin:0;color:var(--mute);line-height:1.55}
+.cmp-card .eq{margin:0;justify-self:start}
+.cmp-tag{display:inline-block;justify-self:start;padding:3px 12px;border-radius:99px;background:color-mix(in srgb,var(--c) 24%,transparent);color:var(--ink);font:700 .74rem "Instrument Sans",sans-serif;text-transform:uppercase;letter-spacing:.08em}
+.cmp-tag.err{background:color-mix(in srgb,var(--err) 20%,transparent)}
+.cmp-tip{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1fr);gap:26px;align-items:center;margin-top:28px;padding:22px 26px;border-radius:24px;background:var(--surf);border:1px solid var(--line);border-left:5px solid var(--err)}
+.cmp-tipfig{--c:#f08a24;padding:10px;border-radius:18px;background:color-mix(in srgb,var(--c) 7%,var(--bg))}
+.cmp-tip h3{font-size:1.35rem;line-height:1.25;margin:10px 0 8px}
+.cmp-tip p{margin:0;color:var(--mute);line-height:1.6}
+@media (max-width:800px){
+  .cmp-row{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .cmp-q{grid-column:1/-1;padding:8px 2px 0}
+  .cmp-heads>span{display:none}
+  .cmp-th{font-size:1rem;padding:12px 14px}
+  .cmp-cell{padding:12px 14px;font-size:.92rem}
+  .cmp-sum,.cmp-tip{grid-template-columns:1fr}
+}
+html.expo .cmp-cell{padding:10px 18px}
+html.expo .cmp-tip{margin-top:18px;padding:16px 22px}
+html.expo .cmp-title{margin-top:22px}

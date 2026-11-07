@@ -1,0 +1,16 @@
+/* Light lab (simulator): scenario buttons, readouts and panels. */
+/* Simulator: livelier cases and panels */
+.case{transition:transform .2s cubic-bezier(.34,1.56,.64,1),border-color .2s,background .2s,box-shadow .2s}
+@media (hover:hover) and (pointer:fine){
+  .case:hover{transform:translateY(-3px);box-shadow:0 10px 24px -12px color-mix(in srgb,var(--at) 55%,transparent)}
+  .case:hover .ic{animation:icpop .5s}
+}
+@keyframes icpop{40%{transform:scale(1.35) rotate(-8deg)}}
+.cvwrap canvas,.simcv{border-radius:20px;box-shadow:0 18px 50px -24px rgba(0,0,0,.6)}
+.explain{transition:border-color .3s,box-shadow .3s}
+.explain strong{transition:color .3s}
+.stat{transition:transform .2s,box-shadow .2s}
+.stat:hover{transform:translateY(-2px)}
+@media (prefers-reduced-motion:reduce){
+  .case,.case:hover,.stat:hover{transform:none!important;animation:none!important}
+}

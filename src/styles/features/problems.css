@@ -1,0 +1,49 @@
+/* Solved problems: statement image on the left, worked solution on the right */
+.prb-tabs{display:flex;flex-wrap:wrap;gap:10px;margin:28px 0 20px}
+.prb-tab{position:relative;display:grid;gap:2px;text-align:left;padding:10px 18px;border-radius:16px;border:1px solid var(--line);background:var(--surf);color:var(--mute);font:inherit;cursor:pointer;transition:border-color .25s,transform .25s cubic-bezier(.23,1,.32,1)}
+.prb-tab:hover{transform:translateY(-2px)}
+.prb-tab b{position:relative;z-index:1;color:var(--ink);font-size:1rem}
+.prb-tab span{position:relative;z-index:1;font-size:.85rem}
+.prb-tab.on{border-color:var(--c)}
+.prb-tabbg{position:absolute;inset:0;border-radius:15px;background:color-mix(in srgb,var(--c) 16%,transparent)}
+.prb-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:24px;align-items:start}
+.prb-left{position:sticky;top:100px;display:grid;gap:12px}
+.prb-img{margin:0;padding:12px;border-radius:22px;background:#fff;border:1px solid var(--line);box-shadow:0 20px 50px -34px var(--c)}
+.prb-img img{display:block;width:100%;height:auto;border-radius:12px}
+.prb-img figcaption{padding:10px 6px 2px;text-align:center;font-size:.85rem;color:#4a4f6a}
+.prb-sol{display:grid;gap:14px;min-width:0}
+.prb-ctl{display:flex;flex-wrap:wrap;gap:10px}
+.prb-steps{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.prb-step{display:grid;grid-template-columns:36px minmax(0,1fr);gap:14px;align-items:start;padding:14px 18px 16px;border-radius:18px;background:var(--surf);border:1px solid var(--line);border-left:4px solid var(--c);scroll-margin-bottom:120px;transition:box-shadow .4s,border-color .4s}
+.prb-step>i{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--c);color:#080a18;font:800 .9rem "Instrument Sans",sans-serif;font-style:normal}
+.prb-step h4{margin:2px 0 4px;font-size:1.02rem}
+.prb-step p{margin:0;color:var(--mute);line-height:1.6;font-size:.96rem}
+.prb-step .eq{display:inline-block;margin-top:8px;padding:6px 12px;border-radius:10px;background:color-mix(in srgb,var(--c) 14%,transparent);color:var(--ink);font-weight:700;font-size:.98rem;line-height:1.4}
+.prb-step.latest{box-shadow:0 0 0 2px color-mix(in srgb,var(--c) 55%,transparent),0 14px 34px -22px var(--c);animation:prb-latest 1.6s ease-out}
+@keyframes prb-latest{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--c) 70%,transparent)}100%{box-shadow:0 0 0 14px transparent}}
+.prb-diagram{margin:0;padding:10px 12px 8px;border-radius:20px;background:var(--surf);border:1px solid color-mix(in srgb,var(--c) 40%,var(--line))}
+.prb-diagram .hfig{max-height:230px;margin:0 auto}
+.prb-diagram figcaption{margin-top:4px;text-align:center;font-size:.82rem;color:var(--mute)}
+.prb-ans{display:flex;align-items:center;gap:18px;padding:16px 22px;border-radius:20px;background:linear-gradient(120deg,color-mix(in srgb,var(--c) 30%,transparent),color-mix(in srgb,var(--c) 10%,transparent));border:1px solid var(--c)}
+.prb-key{display:grid;place-items:center;width:54px;height:54px;border-radius:16px;background:var(--c);color:#080a18;font:800 1.5rem "Bricolage Grotesque",system-ui,sans-serif}
+.prb-ans small{display:block;font:700 .75rem "Instrument Sans",sans-serif;text-transform:uppercase;letter-spacing:.08em;color:var(--mute)}
+.prb-ans strong{font:800 1.8rem/1.1 "Bricolage Grotesque",system-ui,sans-serif;color:var(--ink)}
+.prb-ans p{margin:2px 0 0;color:var(--mute);font-size:.92rem}
+.prb-hint{margin:0;color:var(--mute);font-size:.95rem}
+@media (max-width:900px){
+  .prb-grid{grid-template-columns:1fr}
+  .prb-left{position:static}
+}
+/* Presentation mode: the statement stays in view while the steps appear one by one */
+html.expo .prb-ctl{display:none}
+html.expo .prb-left{top:14px}
+html.expo .prb-img img{max-height:40vh;width:auto;max-width:100%;margin:0 auto}
+html.expo .prb-diagram .hfig{max-height:26vh}
+html.expo .prb-tabs{margin:14px 0 12px}
+html.expo .prb-step{padding:11px 16px 12px}
+html.expo .prb-step h4{font-size:.95rem}
+html.expo .prb-step p{font-size:.85rem;line-height:1.5}
+html.expo .prb-step .eq{font-size:.88rem;margin-top:5px}
+html.expo .prb-ans{padding:12px 18px}
+html.expo .prb-ans strong{font-size:1.5rem}
+@media (prefers-reduced-motion:reduce){.prb-step.latest{animation:none}}

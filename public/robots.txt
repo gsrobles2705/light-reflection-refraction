@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://fisica.uni.workers.dev/sitemap.xml

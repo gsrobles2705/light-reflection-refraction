@@ -1,0 +1,57 @@
+/* Key ideas: richer cards (legend, reflection types, index bars, worked example) */
+.theory .dpan{align-self:start;position:sticky;top:100px}
+.tintro{display:flex;align-items:stretch;gap:14px;flex-wrap:wrap;margin:26px 0 22px}
+.tstep{flex:1 1 190px;display:grid;gap:4px;padding:14px 18px;border-radius:18px;background:var(--surf);border:1px solid var(--line);align-content:start}
+.tstep i{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--c);color:#080a18;font:800 .85rem "Instrument Sans",sans-serif;font-style:normal;margin-bottom:4px}
+.tstep b{font-size:1rem}.tstep span{color:var(--mute);font-size:.92rem;line-height:1.45}.tstep em{color:var(--ink);font-style:normal;font-weight:700}
+.tarrow{align-self:center;width:34px;height:2px;background:var(--bd);position:relative;flex:0 0 34px}
+.tarrow::after{content:"";position:absolute;right:-1px;top:-4px;border:5px solid transparent;border-left:8px solid var(--bd)}
+.tarrow::before{content:"";position:absolute;inset:-1px;background:linear-gradient(90deg,transparent,var(--c),transparent);background-size:200% 100%;animation:tflow 1.8s linear infinite}
+@keyframes tflow{from{background-position:200% 0}to{background-position:-200% 0}}
+.tfork{flex:1.4 1 260px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tfork button{display:grid;gap:2px;text-align:left;padding:14px 16px;border-radius:18px;border:1.5px solid var(--c);background:color-mix(in srgb,var(--c) 9%,var(--surf));color:var(--ink);font:inherit;cursor:pointer;transition:transform .25s cubic-bezier(.23,1,.32,1),background .25s}
+.tfork button:hover{transform:translateY(-3px);background:color-mix(in srgb,var(--c) 18%,var(--surf))}
+.tfork button b{font-size:.98rem;line-height:1.25}.tfork button span{font:700 .72rem "Instrument Sans",sans-serif;text-transform:uppercase;letter-spacing:.08em;color:var(--mute)}
+.titem.rich h3{margin-bottom:10px}
+.tleg,.tex-steps,.tdaily ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.tleg li,.tex-steps li{display:grid;grid-template-columns:26px 1fr;gap:12px;align-items:start}
+.tleg i,.tex-steps i{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--c);color:#080a18;font:800 .78rem "Instrument Sans",sans-serif;font-style:normal;margin-top:1px}
+.tleg span,.tex-steps span{display:grid;gap:2px;color:var(--mute);line-height:1.45;font-size:.95rem}
+.tleg b{color:var(--ink)}
+/* specular / diffuse */
+.tseg{display:inline-flex;padding:4px;border-radius:99px;background:var(--surf);border:1px solid var(--line);margin-bottom:10px}
+.tseg button{border:0;background:none;color:var(--mute);font:700 .88rem "Instrument Sans",sans-serif;padding:7px 18px;border-radius:99px;cursor:pointer;transition:background .3s,color .3s}
+.tseg button[aria-pressed="true"]{background:var(--c);color:#080a18}
+.ttypes-svg{display:block;width:100%;height:auto;max-height:150px;border-radius:14px;background:color-mix(in srgb,var(--c) 6%,var(--bg))}
+.ttypes p{margin:10px 0 6px}.ttypes small,.tdaily small{display:block;color:var(--mute);font-size:.88rem;line-height:1.5}
+/* direction of the bent ray */
+.tdir{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.tdir figure{margin:0;padding:8px 8px 10px;border-radius:16px;background:color-mix(in srgb,var(--c) 6%,var(--bg));border:1px solid var(--line)}
+.tdir figcaption{margin-top:6px;font-size:.86rem;line-height:1.4;color:var(--mute);text-align:center}.tdir b{color:var(--ink)}
+/* index bars */
+.tbars{display:grid;gap:10px;margin-top:14px}.tbars-c{margin:0;font:700 .85rem "Instrument Sans",sans-serif;color:var(--ink)}
+.tbar{display:grid;grid-template-columns:92px minmax(0,1fr) 62px;grid-template-areas:"name track n" "name speed speed";column-gap:12px;row-gap:2px;align-items:center}
+.tbar-name{grid-area:name;font-size:.9rem;color:var(--ink);font-weight:600}
+.tbar-track{grid-area:track;height:12px;border-radius:99px;background:color-mix(in srgb,var(--c) 14%,transparent);overflow:hidden}
+.tbar-track i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,color-mix(in srgb,var(--c) 60%,transparent),var(--c))}
+.tbar-n{grid-area:n;font:700 .85rem "Instrument Sans",sans-serif;color:var(--ink);text-align:right}
+.tbar-v{grid-area:speed;font-size:.8rem;color:var(--mute)}
+/* worked example */
+.tex-q{margin:0 0 12px;color:var(--ink);line-height:1.5}
+.tex-body{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:16px;align-items:center}
+.tex-steps code{display:inline-block;justify-self:start;padding:3px 10px;border-radius:8px;background:color-mix(in srgb,var(--c) 15%,transparent);color:var(--ink);font:700 .95rem Cambria,Georgia,serif;font-style:italic}
+.tex-fig{padding:8px;border-radius:16px;background:color-mix(in srgb,var(--c) 6%,var(--bg));border:1px solid var(--line)}
+.tex-ok{display:flex;gap:8px;align-items:flex-start;margin:14px 0 0!important;padding:10px 14px;border-radius:14px;background:color-mix(in srgb,#3fe3a0 14%,transparent);border:1px solid #3fe3a0;color:var(--ink)!important;font-size:.95rem;line-height:1.45}
+.tex-ok svg{flex:0 0 auto;margin-top:2px;color:#2fbf86}
+/* daily life */
+.tdaily li{display:grid;gap:2px;padding:10px 14px;border-radius:14px;background:color-mix(in srgb,var(--c) 10%,transparent)}
+.tdaily b{color:var(--ink)}.tdaily li span{color:var(--mute);font-size:.93rem;line-height:1.45}
+.tdaily small{margin-top:10px}.tdaily a{color:var(--bt);font-weight:700}
+@media (max-width:820px){
+  .theory .dpan{position:static}
+  .tarrow{display:none}.tfork{grid-template-columns:1fr}
+  .tdir,.tex-body{grid-template-columns:1fr}
+  .tbar{grid-template-columns:78px minmax(0,1fr) 56px}
+}
+html.expo .theory .dpan{top:14px}
+@media (prefers-reduced-motion:reduce){.tarrow::before{animation:none}}

@@ -1,0 +1,22 @@
+/* Footer: links, course chips and back-to-top button. */
+/* Footer: spectral underline that draws itself + shift + color dot */
+.foot a:not(.fbrand):not(.totop){position:relative;display:inline-block;padding:2px 0 2px 0;transition:color 160ms,transform 220ms cubic-bezier(.23,1,.32,1)}
+.foot a:not(.fbrand):not(.totop)::before{content:"";position:absolute;left:-14px;top:50%;width:6px;height:6px;margin-top:-3px;border-radius:50%;background:var(--g1);opacity:0;transform:scale(0);transition:opacity 200ms,transform 260ms cubic-bezier(.34,1.56,.64,1)}
+.foot a:not(.fbrand):not(.totop)::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;border-radius:2px;background:var(--spec);transform:scaleX(0);transform-origin:left;transition:transform 300ms cubic-bezier(.23,1,.32,1)}
+.foot a:not(.fbrand):not(.totop):hover,.foot a:not(.fbrand):not(.totop):focus-visible{transform:translateX(6px)}
+.foot a:not(.fbrand):not(.totop):hover::before,.foot a:not(.fbrand):not(.totop):focus-visible::before{opacity:1;transform:scale(1)}
+.foot a:not(.fbrand):not(.totop):hover::after,.foot a:not(.fbrand):not(.totop):focus-visible::after{transform:scaleX(1)}
+.foot .fnav,.foot ul{padding-left:14px}
+.fbrand{transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
+.fbrand:hover{transform:scale(1.04)}
+.fbrand:hover svg{animation:spin 1.2s ease}
+.totop{transition:transform .25s,box-shadow .25s}
+.totop:hover{transform:translateY(-3px);box-shadow:0 8px 22px color-mix(in srgb,var(--g1) 35%,transparent)}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){
+  .foot a,.foot a::before,.foot a::after,.fbrand,.totop{transition:none!important;animation:none!important}
+}
+.foot{padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))}
+/* Footer: course chips in a row with gaps (they used to be inline and overlapped, and each one's blur "erased" the previous) */
+.fchips{margin:0;gap:8px}
+.fchips .chip{backdrop-filter:none;-webkit-backdrop-filter:none;background:transparent;white-space:nowrap;line-height:1.3}

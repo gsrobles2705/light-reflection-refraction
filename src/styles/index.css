@@ -1,0 +1,30 @@
+/*
+ * Stylesheet entry point. The ORDER of these imports is the cascade order, so do not sort them alphabetically.
+ *
+ *   base.css      reset, design tokens, layout primitives and the original component styles
+ *   theme.css     the visual layer (spectral navbar, living hero, bento cards…); overrides base.css for the same components
+ *   features/     styles added per feature afterwards; independent of each other, so their relative order is free,
+ *                 except present.css, which must stay last because it overrides other sections while presenting
+ */
+@import './base.css';
+@import './theme.css';
+@import './features/navigation.css';
+@import './features/hero.css';
+@import './features/team.css';
+@import './features/history.css';
+@import './features/diagrams.css';
+@import './features/prism-lab.css';
+@import './features/laser.css';
+@import './features/experiment.css';
+@import './features/virtual-lab.css';
+@import './features/simulator.css';
+@import './features/tool-guide.css';
+@import './features/conclusions.css';
+@import './features/footer.css';
+@import './features/references.css';
+@import './features/problems.css';
+@import './features/theory.css';
+@import './features/comparison.css';
+@import './features/touch.css';
+@import './features/present.css';
+@import './features/perf.css';

@@ -1,0 +1,45 @@
+/* Prism lab: sticky canvas, scroll-driven story and controls. */
+:root{--h-prisma:#ff6bb5}
+#prisma{--c:var(--h-prisma)}
+/* Prism */
+.pgrid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:26px;align-items:start}
+.pstick{position:sticky;top:84px;display:grid;gap:10px}
+.pcv{width:100%;height:auto;aspect-ratio:900/460;border-radius:18px;border:1px solid var(--line);touch-action:none;cursor:grab;background:#05060f;display:block}
+.pcolors{display:flex;flex-wrap:wrap;gap:6px}
+.pcolors button{display:inline-flex;align-items:center;gap:7px;min-height:44px;padding:6px 12px;border-radius:99px;border:1.5px solid var(--bd);background:var(--surf);color:var(--ink);font:600 .85rem "Instrument Sans",sans-serif;cursor:pointer}
+.pcolors i{width:14px;height:14px;border-radius:50%;background:var(--k)}
+.pcolors button.on{border-color:var(--ink);box-shadow:0 0 0 2px color-mix(in srgb,var(--k) 55%,transparent)}
+.psteps{list-style:none;margin:0;padding:0;display:grid;gap:0}
+.psteps li{display:flex;gap:14px;align-items:flex-start;min-height:52vh;padding:18px 0 18px 16px;border-left:4px solid var(--line);opacity:.55;transition:opacity 250ms,border-color 250ms}
+.psteps li.on,.psteps li.pfree{opacity:1}
+.psteps li.on{border-color:var(--c)}
+.psteps li.pfree{min-height:0}
+.psteps h3{font-size:1.35rem;margin-bottom:6px}
+.psteps p{color:var(--mute)}
+.pctl{margin-top:20px;display:grid;gap:14px;padding:18px;border:1px solid var(--line);border-radius:20px;background:var(--surf)}
+.pinfo{display:flex;flex-wrap:wrap;gap:6px 22px;align-items:center}
+.pinfo strong{font:700 1.15rem "Bricolage Grotesque",system-ui,sans-serif}
+.pinfo em{font-style:normal;color:var(--mute)}
+.pnote{flex-basis:100%;color:var(--mute)}
+.pfields{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px 18px}
+.pfields label{display:flex;justify-content:space-between;gap:8px}
+.ptog{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+@media (max-width:900px){
+  .pgrid{grid-template-columns:1fr}
+  .pstick{top:70px;z-index:6;background:var(--bg);padding-bottom:6px}
+  .psteps li{min-height:40vh}
+}
+.psteps li{min-height:38vh}
+.wrap.pwide{max-width:1320px}
+@media (min-width:901px){
+  .pgrid{grid-template-columns:minmax(0,1.9fr) minmax(0,1fr)}
+}
+.pcv,.simcv{touch-action:pan-y}
+/* Prism lab on mobile: the sticky block takes less space (canvas + colors in a single scrollable row) */
+@media (max-width:900px){
+  .pstick{top:60px;gap:6px;padding-bottom:4px}
+  .pcolors{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding-bottom:2px}
+  .pcolors::-webkit-scrollbar{display:none}
+  .pcolors button{flex:0 0 auto;min-height:44px}
+  .psteps li{min-height:46vh}
+}

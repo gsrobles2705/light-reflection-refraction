@@ -1,0 +1,17 @@
+/* Tool guide: the strip that says which interactive tool is on screen and what it is for */
+.tguide{margin:26px 0 14px;padding:16px 20px;border-radius:20px;background:color-mix(in srgb,var(--c) 6%,var(--surf));border:1px solid color-mix(in srgb,var(--c) 30%,var(--line));border-left:5px solid var(--c)}
+.tguide-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0 0 12px;padding:0;list-style:none}
+.tguide-row li{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:14px;border:1px solid var(--line);color:var(--mute);opacity:.62;transition:opacity .35s,background .35s,border-color .35s}
+.tguide-row li.on{opacity:1;color:var(--ink);background:color-mix(in srgb,var(--c) 14%,transparent);border-color:var(--c)}
+.tguide-row i{flex:0 0 auto;display:grid;place-items:center;width:26px;height:26px;border-radius:50%;font:800 .85rem "Bricolage Grotesque",system-ui,sans-serif;font-style:normal;background:var(--c);color:#080a18}
+.tguide-row span{display:grid;line-height:1.2}
+.tguide-row b{font-size:.95rem}
+.tguide-row small{font:700 .7rem "Instrument Sans",sans-serif;text-transform:uppercase;letter-spacing:.08em;color:var(--mute)}
+.tguide-row li.on small{color:var(--c)}
+.tguide p{margin:0 0 4px;font-size:.95rem;line-height:1.5;color:var(--mute)}
+.tguide p b{color:var(--ink)}
+@media (max-width:700px){.tguide-row{grid-template-columns:1fr}.tguide{padding:14px}}
+/* While presenting, the simulator slide has no spare height: only the strip with the three tools stays */
+html.expo #simulador .tguide{margin:0 0 8px;padding:8px 12px}
+html.expo #simulador .tguide p{display:none}
+html.expo #simulador .tguide-row{margin:0}

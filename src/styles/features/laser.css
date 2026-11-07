@@ -1,0 +1,7 @@
+/* Shared SVG laser and beam animation (counterpart of rendering/laser.js). */
+/* Unified laser (SVG): advancing wavefronts, same as the simulator */
+@keyframes lzflow{from{stroke-dashoffset:calc(var(--sp) * 1px)}to{stroke-dashoffset:0}}
+.lz-flow{animation:lzflow linear infinite}
+@media (prefers-reduced-motion:reduce){
+  .lz-flow{animation:none}
+}

@@ -1,0 +1,10 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  // The Worker name is the first part of the address: <name>.<account-subdomain>.workers.dev
+  "name": "fisica",
+  "compatibility_date": "2026-11-01",
+  // Static site only: Cloudflare serves the Vite build output, no Worker code needed.
+  "assets": {
+    "directory": "./dist"
+  }
+}

@@ -1,0 +1,170 @@
+/* History timeline: horizontal on desktop, vertical (revealed on scroll) on phones. */
+/* History */
+.htl{position:relative;display:flex;gap:6px;overflow-x:auto;padding:14px 4px 26px;margin-top:22px;scrollbar-width:thin}
+.htl-line{position:absolute;left:30px;right:30px;top:27px;height:3px;border-radius:3px;background:var(--line)}
+.htl-line b{display:block;height:100%;border-radius:3px;background:var(--spec);transition:width .45s cubic-bezier(.23,1,.32,1)}
+.htl button{position:relative;flex:1 0 84px;display:grid;justify-items:center;gap:8px;padding:0 6px;border:0;background:none;color:var(--mute);cursor:pointer;font:inherit}
+.hdot{width:26px;height:26px;border-radius:50%;background:var(--bg);border:3px solid var(--line);z-index:1;transition:transform .3s cubic-bezier(.34,1.56,.64,1),background .25s,border-color .25s}
+.htl button:hover .hdot{transform:scale(1.2);border-color:var(--c)}
+.htl button.past .hdot{border-color:var(--c)}
+.htl button.on .hdot{background:var(--c);border-color:var(--c);transform:scale(1.3);box-shadow:0 0 0 6px color-mix(in srgb,var(--c) 25%,transparent)}
+.hyear{white-space:nowrap;margin-top:6px;font:700 .85rem "Bricolage Grotesque",system-ui,sans-serif;color:var(--ink)}
+.hwho{font-size:.8rem;text-align:center;line-height:1.35;text-wrap:balance}
+.htl button.on .hwho{color:var(--ink)}
+.hcard{display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center;margin-top:10px;padding:28px 30px;border-radius:24px;background:var(--surf);border:1px solid var(--line);border-left:5px solid var(--c)}
+.hbig{font:800 clamp(2.4rem,7vw,4.6rem)/1 "Bricolage Grotesque",system-ui,sans-serif;letter-spacing:-.04em;color:var(--c);min-width:2.6ch}
+.hplace{font-size:.85rem;color:var(--mute);text-transform:uppercase;letter-spacing:.08em}
+.hcard h3{font-size:1.4rem;margin:4px 0 10px}
+.hcard p{color:var(--mute);max-width:62ch}
+.hwhy{margin-top:10px}
+.hwhy b{color:var(--ink)}
+.hkey{display:inline-block;margin-top:12px;padding:4px 12px;border-radius:99px;background:var(--c);color:#080a18;font:700 .8rem "Instrument Sans",sans-serif}
+.hnav{display:flex;justify-content:space-between;margin-top:14px}
+.hnav button:disabled{opacity:.35;cursor:default}
+@media (max-width:700px){
+  .hcard{grid-template-columns:1fr;gap:10px;padding:20px}
+}
+/* Compact menu: color dots; the active section (or the hovered one) shows its name */
+:root{--h-historia:#5ee0c8}
+#historia{--c:var(--h-historia)}
+/* History on mobile: vertical timeline that reveals itself while scrolling */
+.hvert{display:none;list-style:none;margin:26px 0 0;padding:0}
+@media (max-width:800px){
+    .hvert{display:block}
+  .hvert li{position:relative;padding:0 0 26px 40px}
+  .hv-dot{position:absolute;left:4px;top:6px;width:20px;height:20px;border-radius:50%;background:var(--bg);border:3px solid var(--line);z-index:1;transition:background .4s,border-color .4s,transform .5s cubic-bezier(.34,1.56,.64,1),box-shadow .4s}
+  .hv-line{position:absolute;left:12.5px;top:26px;bottom:-6px;width:3px;border-radius:3px;background:var(--line);overflow:hidden}
+  .hv-line::after{content:"";position:absolute;inset:0;background:var(--c);transform:scaleY(0);transform-origin:top;transition:transform .9s cubic-bezier(.23,1,.32,1) .25s}
+  .hvert li.in .hv-dot{background:var(--c);border-color:var(--c);transform:scale(1.15);box-shadow:0 0 0 6px color-mix(in srgb,var(--c) 22%,transparent)}
+  .hvert li.in .hv-line::after{transform:scaleY(1)}
+  .hv-card{opacity:0;transform:translateY(22px);transition:opacity .6s ease-out,transform .7s cubic-bezier(.23,1,.32,1);padding:16px 16px 18px;border-radius:18px;background:var(--surf);border:1px solid var(--line);border-left:4px solid var(--c)}
+  .hvert li.in .hv-card{opacity:1;transform:none}
+  .hv-year{display:block;font:800 1.9rem/1 "Bricolage Grotesque",system-ui,sans-serif;letter-spacing:-.03em;color:var(--c);margin-bottom:4px}
+  .hv-card h3{font-size:1.1rem;margin:4px 0 8px}
+  .hv-card p{color:var(--mute);font-size:.95rem;line-height:1.5;margin:0 0 6px}
+  .hv-card .hwhy b{color:var(--ink)}
+  .hvert li.key .hv-card{box-shadow:0 14px 40px -20px var(--c)}
+}
+@media (prefers-reduced-motion:reduce){
+  .hv-card,.hv-dot,.hv-line::after{transition:none!important}
+  .hv-card{opacity:1;transform:none}
+}
+
+/* Story cards that filter the timeline */
+.hlanes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:26px}
+.hlane{position:relative;display:grid;gap:8px;align-content:start;text-align:left;padding:18px 20px;border-radius:20px;background:var(--surf);border:1px solid var(--line);border-top:4px solid var(--c);color:var(--mute);font:inherit;cursor:pointer;transition:transform .25s cubic-bezier(.23,1,.32,1),border-color .25s,box-shadow .25s}
+.hlane:hover{transform:translateY(-3px)}
+.hlane.on{border-color:color-mix(in srgb,var(--c) 55%,var(--line));box-shadow:0 10px 24px -20px var(--c);background:color-mix(in srgb,var(--c) 5%,var(--surf));color:var(--ink)}
+.hlane-tag{display:flex;justify-content:space-between;align-items:center;font:700 .74rem "Instrument Sans",sans-serif;text-transform:uppercase;letter-spacing:.08em;color:var(--c)}
+.hlane-tag b{padding:2px 10px;border-radius:99px;background:color-mix(in srgb,var(--c) 18%,transparent);color:var(--ink);letter-spacing:.02em;text-transform:none}
+.hlane strong{font:800 1.35rem/1.15 "Bricolage Grotesque",system-ui,sans-serif;letter-spacing:-.02em;color:var(--ink)}
+.hlane code{justify-self:start;padding:4px 10px;border-radius:10px;background:color-mix(in srgb,var(--c) 14%,transparent);color:var(--c);font-size:.95rem;font-weight:700}
+.hlane-hook{font-size:.9rem;line-height:1.45}
+.hcount{font-size:.85rem;color:var(--mute);align-self:center}
+/* Full narratives: animated toggle */
+.hfull{margin-top:32px;border-radius:20px;border:1px solid var(--line);background:var(--surf);padding:0 22px;transition:border-color .3s}
+.hfull.open{border-color:var(--line)}
+.hfull-btn{width:100%;display:flex;justify-content:space-between;align-items:center;padding:18px 0;border:0;background:none;color:var(--ink);font:700 1rem "Instrument Sans",sans-serif;cursor:pointer}
+.hfull-btn i{position:relative;width:22px;height:22px;transition:transform .5s cubic-bezier(.23,1,.32,1)}
+.hfull-btn i::before,.hfull-btn i::after{content:"";position:absolute;left:50%;top:50%;width:14px;height:2px;margin:-1px 0 0 -7px;border-radius:2px;background:var(--mute)}
+.hfull-btn i::after{transform:rotate(90deg)}
+.hfull.open .hfull-btn i{transform:rotate(135deg)}
+.hfull-body{overflow:hidden}
+.hstory-tag{display:inline-block;padding:3px 12px;border-radius:99px;background:color-mix(in srgb,var(--c) 22%,transparent);color:var(--ink);font:700 .75rem "Instrument Sans",sans-serif;text-transform:uppercase;letter-spacing:.08em}
+.hcomps{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;padding:0 0 24px}
+.hcomp{padding:20px 22px 22px;border-radius:20px;border-top:4px solid var(--c);background:color-mix(in srgb,var(--c) 6%,var(--bg));display:grid;gap:14px;align-content:start}
+.hcomp h3{font-size:1.15rem;line-height:1.3;margin:0}
+.hflow{list-style:none;margin:0;padding:0;display:grid;gap:0;position:relative}
+.hflow li{position:relative;display:grid;grid-template-columns:30px 1fr;gap:12px;padding:0 0 14px;align-items:start}
+.hflow li:not(:last-child)::before{content:"";position:absolute;left:14px;top:30px;bottom:2px;width:2px;background:color-mix(in srgb,var(--c) 45%,transparent)}
+.hflow i{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--c);color:#080a18;font:800 .85rem "Instrument Sans",sans-serif;font-style:normal}
+.hflow span{display:grid;line-height:1.4;font-size:.93rem;color:var(--mute)}
+.hflow b{color:var(--ink);font-size:.95rem}
+.hflow li.wrong i{background:transparent;border:2px dashed var(--c);color:var(--c)}
+.hflow li.wrong span{text-decoration:line-through;text-decoration-color:color-mix(in srgb,var(--c) 60%,transparent)}
+.hflow li.wrong b{text-decoration:none}
+.hcomp-ex{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:16px;align-items:center;padding-top:6px;border-top:1px dashed var(--line)}
+.hcomp-ex .dpan{padding:10px;border-radius:18px}
+.hcomp-calc{display:grid;gap:8px;align-content:center}
+.hcomp-calc strong{font:700 .78rem "Instrument Sans",sans-serif;text-transform:uppercase;letter-spacing:.08em;color:var(--c)}
+.hcomp-calc p{margin:0;font-size:.92rem;line-height:1.5;color:var(--mute)}
+.hcomp-calc .eq{justify-self:start}
+/* Phone timeline figure */
+.hv-fig{margin:10px 0 4px;padding:12px;border-radius:16px;background:color-mix(in srgb,var(--c) 7%,var(--bg));border:1px solid color-mix(in srgb,var(--c) 28%,var(--line))}
+.hv-fig p{margin:8px 0 0!important;font-size:.85rem!important;text-align:center}
+.htopic{display:inline-block;margin-left:10px;padding:2px 10px;border-radius:99px;font:700 .7rem "Instrument Sans",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#080a18;background:var(--mute);vertical-align:middle}
+.htopic.reflexion{background:#ffb347}
+.htopic.refraccion{background:#4de3ff}
+.htopic.ambas{background:linear-gradient(90deg,#ffb347,#4de3ff)}
+@media (max-width:800px){
+  .hlanes{grid-template-columns:1fr}
+  .hcomps{grid-template-columns:1fr}
+  .hcomp-ex{grid-template-columns:1fr}
+  .hv-card .htopic{display:table;margin:6px 0 0}
+}
+
+/* Scroll story (desktop): sticky stage, the rail slides and the card stays in place */
+:root{--hs-h:clamp(520px,calc(100vh - 140px),980px)}
+.hscroll{position:relative;margin-top:34px}
+.hs-stage{position:sticky;top:96px;height:var(--hs-h);display:grid;grid-template-columns:210px minmax(0,1fr);gap:26px;align-items:center}
+.hs-rail{position:relative;height:100%;overflow:hidden;-webkit-mask-image:linear-gradient(transparent,#000 22%,#000 78%,transparent);mask-image:linear-gradient(transparent,#000 22%,#000 78%,transparent)}
+.hs-track{position:absolute;left:0;right:0;top:50%;transition:transform .35s cubic-bezier(.23,1,.32,1);will-change:transform}
+.hs-line{position:absolute;left:29px;width:3px;margin-left:-1px;border-radius:3px;background:var(--line)}
+.hs-line b{display:block;width:100%;border-radius:3px;background:var(--c);transition:background .4s}
+.hs-item{position:absolute;left:0;right:0;display:grid;grid-template-columns:58px 1fr;grid-template-rows:auto auto;align-content:center;column-gap:0;padding:0;border:0;background:none;color:var(--mute);text-align:left;cursor:pointer;font:inherit;transition:opacity .3s}
+.hs-dot{grid-row:1/3;justify-self:center;align-self:center;width:18px;height:18px;border-radius:50%;background:var(--bg);border:3px solid var(--c);z-index:1;transition:transform .4s cubic-bezier(.34,1.56,.64,1),background .3s}
+.hs-yr{align-self:end;font:700 1rem "Bricolage Grotesque",system-ui,sans-serif;color:var(--ink);white-space:nowrap}
+.hs-nm{align-self:start;font-size:.82rem;line-height:1.35;padding-right:6px}
+.hs-item:hover .hs-dot{transform:scale(1.25)}
+.hs-item.on .hs-dot{background:var(--c);transform:scale(1.35)}
+.hs-item.on .hs-nm{color:var(--ink)}
+.hs-mark{position:absolute;left:11px;top:50%;width:38px;height:38px;margin-top:-19px;border-radius:50%;border:2px solid var(--c);pointer-events:none;animation:hsring 2.2s ease-out infinite}
+@keyframes hsring{0%{transform:scale(.7);opacity:.9}100%{transform:scale(1.5);opacity:0}}
+.hs-card{position:relative;padding:clamp(26px,3.6vh,46px) clamp(28px,3vw,46px);border-radius:26px;background:var(--surf);border:1px solid var(--line);border-left:5px solid var(--c);box-shadow:0 24px 60px -40px var(--c)}
+.hs-head{display:flex;align-items:flex-end;gap:22px;flex-wrap:wrap;margin-bottom:18px}
+.hs-big{font:800 clamp(2.8rem,8vh,5.2rem)/1 "Bricolage Grotesque",system-ui,sans-serif;letter-spacing:-.04em;color:var(--c)}
+.hs-meta{display:flex;align-items:center;gap:2px;padding-bottom:8px}
+.hs-body{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(24px,2.6vw,40px);align-items:center}
+.hs-text h3{font-size:clamp(1.45rem,2.8vh,1.95rem);line-height:1.25;margin:0 0 14px}
+.hs-text p{color:var(--mute);font-size:clamp(1.02rem,1.9vh,1.3rem);line-height:1.7;margin:0 0 12px;max-width:60ch}
+.hs-fig{margin:0;padding:clamp(10px,1.6vh,18px);border-radius:20px;background:color-mix(in srgb,var(--c) 7%,var(--bg));border:1px solid color-mix(in srgb,var(--c) 28%,var(--line))}
+.hs-fig figcaption{margin-top:10px;font-size:clamp(.85rem,1.5vh,1.05rem);line-height:1.45;text-align:center;color:var(--mute)}
+.hs-foot{position:absolute;left:236px;right:0;bottom:-6px;display:flex;justify-content:space-between;align-items:center;font-size:.85rem;color:var(--mute);pointer-events:none}
+.hs-count b{color:var(--ink);font-size:1rem}
+.hs-hint{display:inline-flex;align-items:center;gap:12px;padding:9px 18px 9px 14px;border-radius:99px;background:var(--surf);border:1px solid var(--line);color:var(--ink);font-size:.95rem;line-height:1.3;box-shadow:0 10px 26px -20px var(--c);pointer-events:none}
+.hs-hint b{color:var(--ink)}.hs-hint em{font-style:normal;color:var(--mute)}
+.hs-mouse{position:relative;flex:0 0 auto;width:18px;height:28px;border-radius:10px;border:2px solid var(--c)}
+.hs-mouse b{position:absolute;left:50%;top:5px;width:4px;height:7px;margin-left:-2px;border-radius:3px;background:var(--c);animation:hswheel 1.5s ease-in-out infinite}
+@keyframes hswheel{0%{transform:translateY(0);opacity:1}70%{transform:translateY(8px);opacity:0}100%{opacity:0}}
+.only-expo{display:none}
+html.expo .only-expo{display:inline}html.expo .only-scroll{display:none}
+html.expo .hs-mouse{display:none}
+/* Figures (built from the theory diagram toolkit) */
+#historia .wrap{max-width:1380px}
+.hs-fig .hfig{max-height:calc(var(--hs-h) - 300px);margin:0 auto}
+.hfig{display:block;width:100%;height:auto;color:var(--c);overflow:visible}
+.hfig .dgl{fill:var(--mute);font:600 12.5px "Instrument Sans",system-ui,sans-serif}
+.hfig .dga{font:800 14px "Instrument Sans",system-ui,sans-serif}
+.hfig .dgv{font:800 14px "Instrument Sans",system-ui,sans-serif}
+@media (max-width:1000px){
+  .hs-stage{grid-template-columns:170px minmax(0,1fr);gap:16px}
+  .hs-body{grid-template-columns:1fr}
+  .hs-fig{max-width:460px}
+}
+@media (max-width:800px){.hscroll{display:none}}
+@media (prefers-reduced-motion:reduce){
+  .hs-track,.hs-mark,.hs-mouse b,.fg-flow,.fg-dot,.fg-wavelet,.fg-lens,.fg-obj,.hfull-btn i{animation:none!important;transition:none!important}
+  .fg-draw{animation:none;stroke-dashoffset:0}
+}
+
+/* Presentation mode: the same scroll story, sized for a full-screen slide (the toolbar takes the bottom strip) */
+html.expo{--hs-h:calc(100vh - 150px)}
+html.expo .hs-stage{top:14px}
+html.expo .hs-text h3{font-size:1.15rem}
+html.expo .hs-text p{font-size:.88rem;line-height:1.6;margin-bottom:8px}
+html.expo .hs-big{font-size:clamp(2.2rem,5vw,3.2rem)}
+html.expo .hs-card{padding:22px 26px 24px}
+html.expo #historia .wrap{max-width:1500px}
+html.expo .hs-fig .hfig{max-height:calc(var(--hs-h) - 250px)}
+html.expo .hs-head{margin-bottom:10px}
+html.expo .hs-foot{bottom:-2px}

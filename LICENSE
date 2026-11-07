@@ -1,0 +1,21 @@
+LICENSE — DECISION PENDING
+==========================
+
+No open-source license has been chosen for this project yet, and the copyright holder(s) have not been specified.
+
+Until the team decides, the default legal situation applies: all rights are reserved by the authors, and nobody
+else is granted permission to copy, modify or redistribute this code. (Hosting the project in a public repository does
+not, by itself, grant those permissions.)
+
+To resolve this:
+
+  1. Decide who the copyright holder(s) are (the student team, the school, or the instructor).
+  2. Pick a license from the options described in docs/LICENSE-DECISION.md.
+  3. Replace the contents of this file with the full text of the chosen license, filling in the year and the
+     holder(s) only once they have been agreed.
+
+Third-party components keep their own licenses:
+
+  - React, React DOM, Vite, @vitejs/plugin-react, motion, Three.js ........ MIT
+  - src/lib/qrcode.js (QR Code Generator for JavaScript, © 2009 Kazuhiko Arase) ... MIT
+    ("QR Code" is a registered trademark of DENSO WAVE INCORPORATED.)

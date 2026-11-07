@@ -1,0 +1,12 @@
+/* Header navigation: compact color-dot menu on desktop. */
+@media (min-width:1241px){
+  .links{gap:0}
+  .links a{padding:8px 9px}
+  .links a::before{margin-right:0;width:8px;height:8px;opacity:.8;transition:opacity 160ms,transform 220ms cubic-bezier(.23,1,.32,1)}
+  .links a .lbl{display:inline-block;max-width:0;opacity:0;overflow:hidden;white-space:nowrap;margin-left:0;transition:max-width .38s cubic-bezier(.23,1,.32,1),opacity .25s,margin-left .38s cubic-bezier(.23,1,.32,1)}
+  .links a.on .lbl,.links a:hover .lbl,.links a:focus-visible .lbl{max-width:9em;opacity:1;margin-left:7px}
+  .links a:hover::before{transform:scale(1.5);opacity:1}
+}
+@media (max-width:1240px){
+  .links{max-height:calc(100dvh - 96px);overflow-y:auto;overscroll-behavior:contain}
+}

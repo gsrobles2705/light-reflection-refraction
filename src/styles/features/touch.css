@@ -1,0 +1,8 @@
+/* Touch devices (pointer: coarse): minimum 44 px targets. */
+/* Touch targets of at least 44 px */
+@media (pointer:coarse){
+  .foot a:not(.fbrand){padding:12px 0}
+  .btn.sm,.btn.ghost,.qk,.vmode button,.vopts button{min-height:44px}
+  .rng::-webkit-slider-thumb{width:32px;height:32px}
+  .rng::-moz-range-thumb{width:32px;height:32px}
+}

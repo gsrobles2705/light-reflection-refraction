@@ -1,0 +1,10 @@
+/* References: two columns (books / online), one card per source. */
+.refg{display:grid;gap:28px;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));max-width:1000px}
+.refh{display:flex;align-items:center;gap:8px;font-size:1rem;letter-spacing:.04em;text-transform:uppercase;color:var(--c,var(--at));margin-bottom:12px}
+.refl{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.refc{background:var(--surf);border:1px solid var(--line);border-left:4px solid var(--c,var(--at));border-radius:6px 16px 16px 6px;padding:16px 18px}
+.refc h4{font-size:1.05rem;color:var(--ink);margin:0 0 4px}
+.ref-by{color:var(--mute);font-size:.9rem;margin:0}
+.ref-top{color:var(--ink);font-size:.92rem;margin:8px 0 0}
+.ref-act{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}

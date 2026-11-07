@@ -1,0 +1,170 @@
+/* Presentation mode: one full-screen slide at a time, plus the presenter toolbar and launcher. Rules prefixed with `html.expo` also override
+other sections while presenting; this file is loaded last on purpose. */
+#expobar{position:fixed;left:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:56;display:flex;flex-wrap:wrap;gap:8px;align-items:center;max-width:calc(100% - 84px)}
+#expobar button,.expoind,.expotimer{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:8px 14px;border-radius:99px;border:1.5px solid var(--bd);background:var(--surf);color:var(--ink);font:600 .85rem "Instrument Sans",sans-serif;cursor:pointer}
+#expobar button[aria-pressed=true]{background:var(--g1);color:var(--on);border-color:var(--g1)}
+#expobar kbd{font:700 .75rem monospace;padding:1px 6px;border-radius:6px;border:1px solid currentColor}
+.expoind{cursor:default;max-width:46ch;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.expotimer{padding:4px 6px;cursor:default}
+.expotimer b{font:700 1rem monospace;padding:0 4px}
+.expotimer button{min-height:36px!important;padding:4px 8px!important;border:0!important}
+@media (max-width:640px){
+  #expobar button:not([aria-label]){font-size:.78rem;padding:8px 10px}
+  .expoind{display:none}
+}
+/* Presentation mode: larger type and higher contrast for projectors */
+html.expo{font-size:20px;--mute:var(--ink)}
+html.expo[data-theme=dark]{--line:#4a5290}
+html.expo .lead,html.expo .titem p,html.expo .app p,html.expo .psteps p{font-size:1.15rem}
+html.expo .links a{font-size:.9rem}
+#expobar{transition:opacity .35s,transform .35s}
+#expobar.idle{opacity:0;transform:translateY(14px);pointer-events:none}
+#expobar button:disabled{opacity:.35;cursor:default}
+html.expo{scroll-snap-type:y proximity}
+html.expo main>section{scroll-snap-align:start}
+html.expo header{opacity:0;pointer-events:none;transform:translateY(-100%);transition:opacity .3s,transform .3s}
+/* Fullscreen/presentation bar: icons only on medium screens; hidden on phones */
+@media (max-width:1100px){
+  #expobar kbd{display:none}
+  #expobar button:not([aria-label^="Sección"]){padding:8px 12px}
+}
+@media (max-width:700px){
+  #expobar{display:none}
+}
+/* Presentation mode: each section is a full-screen slide with room reserved for the toolbar; the toolbar is centered and compact */
+html.expo #th{display:none}
+/* Presentation mode: one slide at a time, centered, with room below for the toolbar */
+html.expo{scroll-snap-type:none}
+html.expo main>section{display:none!important}
+html.expo main>section.expo-cur{display:flex!important;flex-direction:column;position:fixed;inset:0;z-index:40;overflow-y:auto;overflow-x:hidden;box-sizing:border-box;background:var(--bg);padding:clamp(16px,3.5vh,44px) 0 104px;min-height:0;outline:none;animation:slidein .4s cubic-bezier(.23,1,.32,1)}
+html.expo main>section.alt.expo-cur{background:var(--surf)}
+html.expo main>section.expo-cur>*{width:100%}
+html.expo main>section.expo-cur>.wrap{margin-top:auto;margin-bottom:auto}
+/* vertical centering that never clips the start when the content is taller */
+html.expo .foot,html.expo #th,html.expo header{display:none}
+@keyframes slidein{from{opacity:0;transform:translateY(14px)}}
+@media (prefers-reduced-motion:reduce){
+  html.expo main>section.expo-cur{animation:none}
+}
+/* toolbar: a clean, discreet pill */
+#expobar.expo{left:50%;right:auto;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));max-width:calc(100% - 24px);flex-wrap:nowrap;justify-content:center;align-items:center;gap:4px;padding:5px;border-radius:99px;background:color-mix(in srgb,var(--bg) 78%,transparent);border:1px solid var(--line);backdrop-filter:blur(16px) saturate(1.3);-webkit-backdrop-filter:blur(16px) saturate(1.3);box-shadow:0 12px 36px -14px rgba(0,0,0,.7)}
+#expobar.expo.idle{transform:translate(-50%,18px)}
+#expobar.expo button{min-height:0;border:0;background:none;color:var(--ink);cursor:pointer;transition:background .2s,opacity .2s}
+#expobar.expo .ebtn{display:grid;place-items:center;width:38px;height:38px;padding:0;border-radius:50%}
+#expobar.expo .ebtn:hover:not(:disabled){background:color-mix(in srgb,var(--ink) 12%,transparent)}
+#expobar.expo .ebtn:disabled{opacity:.3;cursor:default}
+#expobar.expo .expoexit:hover{background:color-mix(in srgb,#ff6b6b 30%,transparent)!important}
+#expobar.expo .expoind{display:inline-flex;align-items:baseline;gap:8px;min-width:0;max-width:min(30vw,280px);padding:0 8px;border:0;background:none;white-space:nowrap}
+#expobar.expo .expoind b{color:var(--g1);font:800 .85rem monospace}
+#expobar.expo .expoind em{font-style:normal;font-size:.9rem;overflow:hidden;text-overflow:ellipsis}
+#expobar.expo .expoprog{display:inline-flex;align-items:center;gap:5px;padding:0 8px}
+#expobar.expo .expoprog button{width:9px;height:9px;min-height:0;padding:0;border-radius:50%;background:color-mix(in srgb,var(--ink) 28%,transparent);transition:transform .2s,background .2s}
+#expobar.expo .expoprog button.done{background:color-mix(in srgb,var(--g1) 55%,transparent)}
+#expobar.expo .expoprog button.on{background:var(--g1);transform:scale(1.5)}
+#expobar.expo .expoprog button:hover{transform:scale(1.6)}
+#expobar.expo .expotimer{display:inline-flex;padding:0;border:0;background:none}
+#expobar.expo .expotimer button{display:inline-flex;align-items:center;gap:6px;height:38px;padding:0 12px;border-radius:99px;font:700 .85rem monospace}
+#expobar.expo .expotimer button:hover{background:color-mix(in srgb,var(--ink) 12%,transparent)}
+@media (max-width:1000px){
+  #expobar.expo .expoprog{display:none}
+}
+/* Presentation launcher: a single side button that unfolds the options */
+.exlaunch{position:relative;display:flex}
+#expobar .exfab{width:46px;height:46px;min-height:0;padding:0;justify-content:center;border-radius:50%;opacity:.85;transition:opacity .2s,transform .25s cubic-bezier(.34,1.56,.64,1)}
+#expobar .exfab:hover,#expobar .exfab[aria-expanded=true]{opacity:1;transform:scale(1.08)}
+.exmenu{position:absolute;left:0;bottom:calc(100% + 10px);display:grid;gap:8px;min-width:max-content;padding:8px;border-radius:20px;background:color-mix(in srgb,var(--bg) 88%,transparent);border:1px solid var(--line);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 18px 44px -16px rgba(0,0,0,.7);animation:exin .22s cubic-bezier(.23,1,.32,1);transform-origin:bottom left}
+#expobar .exmenu button{justify-content:flex-start;width:100%;white-space:nowrap}
+#expobar .exmenu kbd{display:inline-block!important;margin-left:auto}
+@keyframes exin{from{opacity:0;transform:translateY(8px) scale(.96)}}
+@media (prefers-reduced-motion:reduce){
+  .exmenu{animation:none}
+}
+/* In presentation mode everything must fit on one screen: 2 × 2 and slightly more compact text */
+html.expo .concl{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+html.expo .concl .cc{grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr)}
+html.expo .cc-vis{min-height:0;padding:8px}
+html.expo .cc-body{padding:12px 16px 14px;gap:8px}
+html.expo .cc-body p{font-size:.86rem;line-height:1.42}
+html.expo .cc-head h3{font-size:1rem}
+html.expo .cc-f{font-size:.8rem;padding:4px 10px}
+html.expo .cc-key{margin-top:14px;padding:12px 18px;font-size:.9rem}
+html.expo .cc-ok strong{font-size:2.4rem}
+html.expo #conclusiones .wrap{max-width:1500px}
+@media (max-height:800px){
+  html.expo .cc-body p{font-size:.78rem}
+  html.expo .cc-body{gap:5px;padding:8px 12px 10px}
+  html.expo .cc-key{font-size:.8rem;padding:8px 14px;margin-top:10px}
+  html.expo .cc-key .ic{display:none}
+  html.expo .cc-ok strong{font-size:1.9rem}
+  html.expo .cc-ok span{font-size:.75rem}
+}
+/* Presentation toolbar: the "n/N Section" text sat higher than arrows, dots and timer */
+#expobar.expo .expoind{align-items:center;min-height:38px;line-height:1;padding:0 10px}
+#expobar.expo .expoind b,#expobar.expo .expoind em{line-height:1;display:block}
+#expobar.expo .expoind b{font-size:.85rem}
+#expobar.expo .expotimer button b{line-height:1;padding:0}
+/* Simulator in presentation mode: compact layout that fits low screens WITHOUT shrinking with zoom.
+   What is not needed while presenting is hidden (lead and instructions), the canvas takes all the available height and the side texts shrink. */
+html.expo #simulador .wrap{max-width:1600px;padding:0 clamp(14px,2vw,34px)}
+html.expo #simulador .howto,html.expo #simulador .lead{display:none}
+html.expo #simulador .wrap>div:first-child{display:flex;align-items:baseline;gap:16px;margin:0 0 clamp(6px,1.4vh,14px)}
+html.expo #simulador h2{margin:0;font-size:clamp(1.3rem,4.4vh,2.1rem)}
+html.expo #simulador .tag{margin:0}
+html.expo #simulador{--cvw:calc((100vh - var(--simrest,300px)) * 1.9565)}
+html.expo #simulador .sim2{grid-template-columns:minmax(0,var(--cvw)) minmax(310px,540px);justify-content:center;gap:clamp(10px,1.6vw,22px);padding:clamp(8px,1.4vh,14px);align-items:start}
+html.expo #simulador .simL{gap:clamp(6px,1.2vh,12px)}
+/* canvas: as large as the height allows (missing height = header + text + stats + toolbar) */
+html.expo #simulador .simcv{width:100%}
+html.expo #simulador .explain{padding:clamp(8px,1.4vh,14px) 16px;zoom:.82}
+html.expo #simulador .explain p{line-height:1.4}
+html.expo #simulador .read{gap:8px;zoom:.82}
+html.expo #simulador .stat{padding:6px 10px}
+html.expo #simulador details.more{display:none}
+html.expo #simulador .simR{padding:clamp(8px,1.4vh,14px);gap:clamp(6px,1.1vh,12px);zoom:.8}
+html.expo #simulador .cases{gap:6px}
+html.expo #simulador .case{padding:8px 10px}
+@media (max-height:900px){
+  html.expo #simulador .case small{display:none}
+  html.expo #simulador .note,html.expo #simulador details.adv{display:none}
+}
+@media (max-width:1000px){
+  html.expo #simulador .sim2{grid-template-columns:1fr}
+}
+/* Simulator in presentation mode: height taken by everything that is NOT the canvas (header, text, stats, toolbar), depending on the screen height */
+html.expo #simulador{--simrest:380px}
+@media (min-height:901px){
+  html.expo #simulador{--simrest:330px}
+}
+@media (max-height:760px){
+  html.expo #simulador{--simrest:350px}
+  html.expo #simulador .stat em{display:none}
+  html.expo #simulador .explain p{font-size:.86rem}
+  html.expo #simulador .explain strong{font-size:1rem;margin-bottom:2px}
+  html.expo #simulador .simR{gap:6px}
+}
+/* the "Drag the laser" hint must sit over the canvas, not over the gap next to it */
+html.expo #simulador .cvwrap{width:100%}
+/* very low screens: the toolbar already says "Simulator", so the header is dropped to give its room to the canvas */
+@media (max-height:700px){
+  html.expo #simulador .wrap>div:first-child{display:none}
+  html.expo #simulador{--simrest:300px}
+}
+/* tall / wide screens: the simulator uses the available space */
+html.expo #simulador .wrap{max-width:1760px}
+html.expo #simulador .sim2{grid-template-columns:minmax(0,var(--cvw)) minmax(310px,600px)}
+html.expo #simulador .cvhint{font-size:.72rem;padding:6px 12px;bottom:10px}
+
+/* No scrollbars while presenting (the slide still scrolls with wheel, touch and keys) */
+html.expo,html.expo main>section.expo-cur{scrollbar-width:none;-ms-overflow-style:none}
+html.expo::-webkit-scrollbar,html.expo body::-webkit-scrollbar,html.expo main>section.expo-cur::-webkit-scrollbar{display:none;width:0;height:0}
+
+/* Step-by-step reveal: each block of the slide appears on a click (see usePresentationSlides) */
+html.expo .step-unit:not(.step-in){opacity:0;transform:translate3d(0,28px,0) scale(.98);pointer-events:none}
+html.expo .step-unit.step-in{opacity:1;transform:none}
+html.expo main>section.expo-cur{cursor:pointer}
+html.expo main>section.expo-cur :is(button,a,input,select,textarea,canvas,summary,label){cursor:pointer}
+#expobar.expo .estep{background:color-mix(in srgb,var(--g1) 22%,transparent);animation:stepnudge 2.4s ease-in-out infinite}
+#expobar.expo .estep:hover:not(:disabled){background:color-mix(in srgb,var(--g1) 40%,transparent)}
+@keyframes stepnudge{0%,100%{transform:translateY(0)}50%{transform:translateY(3px)}}
+@media (prefers-reduced-motion:reduce){#expobar.expo .estep{animation:none}html.expo .step-unit:not(.step-in){transform:none}}
+html.expo .step-unit{scroll-margin-bottom:120px}
