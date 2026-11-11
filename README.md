@@ -138,7 +138,7 @@ src/
   components/         shared presentational components (icons, diagrams, brand mark, UI primitives)
   features/<name>/    one folder per page section; features never import each other
   styles/             base.css -> theme.css -> features/*.css (see index.css for the load order)
-public/               static files: favicon.svg, logo.svg, og-image.png, robots.txt, sitemap.xml
+public/               static files: favicon.svg, logo.svg, social-preview-2026.png, robots.txt, sitemap.xml
 design/logos/         logo proposals and fixed-color variants of the active logo
 tests/                node:test suites + a recording canvas context
 scripts/              check-bundle.mjs

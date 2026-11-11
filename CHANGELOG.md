@@ -5,6 +5,7 @@ All notable changes to the project, newest first. Text shown to users stays in S
 ## Unreleased — Review round 16
 - **Section spacing and QR card:** moved section content below the wave dividers; constrained the presentation-mode QR card and synchronized its scroll fade with the hero copy.
 - **README and project notes:** added three interface screenshots and updated stale references to persistence and removed components.
+- **Link preview:** replaced the overlapping Open Graph cover with a new 1200 × 630 card and updated Open Graph/Twitter image metadata.
 
 ## Review round 15
 - **Red laser:** the group's laser is now red everywhere in the experiment (setup lab, virtual practice protractor, texts, card
