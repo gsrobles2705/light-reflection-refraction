@@ -11,7 +11,7 @@ export function transitionTheme(originElement, applyTheme) {
   const root = document.documentElement, box = originElement.getBoundingClientRect()
   const x = box.left + box.width / 2, y = box.top + box.height / 2
   const radius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y))
-  root.classList.add('vt')
+  root.classList.add('theme-vt')
   const transition = document.startViewTransition(applyTheme)
   transition.ready.catch(() => {})
   transition.ready.then(() => {
@@ -22,5 +22,5 @@ export function transitionTheme(originElement, applyTheme) {
     document.body.append(ring)
     ring.animate([{ transform: 'scale(0)' }, { transform: 'scale(1)' }], TRANSITION).finished.finally(() => ring.remove())
   })
-  transition.finished.finally(() => root.classList.remove('vt'))
+  transition.finished.finally(() => root.classList.remove('theme-vt'))
 }

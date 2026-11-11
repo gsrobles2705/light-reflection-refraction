@@ -70,12 +70,11 @@ function ScrollStory({ events, controls }) {
             <i className="hs-line" aria-hidden="true" style={{ top: ITEM_H/2, height: last*ITEM_H }}><b style={{ height: pos*ITEM_H }} /></i>
             {events.map((item, i) => (
               <button key={item.year} type="button" className={'hs-item' + (i === active ? ' on' : '')} aria-current={i === active ? 'step' : undefined} onClick={() => goTo(i)}
-                style={{ top: i*ITEM_H, height: ITEM_H, opacity: Math.max(0.25, 1 - Math.abs(i - pos)*0.28), '--c': item.color }}>
+                style={{ top: i*ITEM_H, height: ITEM_H, opacity: Math.max(0.45, 1 - Math.abs(i - pos)*0.28), '--c': item.color }}>
                 <span className="hs-dot" aria-hidden="true" /><span className="hs-yr">{item.year}</span><span className="hs-nm">{item.who}</span>
               </button>
             ))}
           </div>
-          <span className="hs-mark" aria-hidden="true" />
         </div>
         <AnimatePresence mode="wait" custom={dirRef.current}>
           <motion.article key={event.year} className="hs-card" custom={dirRef.current} variants={cardVariants} initial={reduceMotion ? false : 'enter'} animate="center" exit={reduceMotion ? undefined : 'exit'}>
@@ -100,10 +99,9 @@ function ScrollStory({ events, controls }) {
         <div className="hs-foot" aria-hidden="true">
           <span className="hs-count"><b>{active + 1}</b> / {events.length}</span>
           <span className="hs-hint">
-            <i className="hs-mouse"><b /></i>
             {following
-              ? <span><span className="only-scroll">Sigue bajando</span><span className="only-expo">Clic o Espacio</span> · siguiente: <b>{following.who}</b> <em>{following.year}</em></span>
-              : <span>Última etapa · <span className="only-scroll">sigue bajando</span><span className="only-expo">clic o Espacio</span> para ver el resumen</span>}
+              ? <span>Clic o Espacio · siguiente: <b>{following.who}</b> <em>{following.year}</em></span>
+              : <span>Última etapa · clic o Espacio para ver el resumen</span>}
           </span>
         </div>
       </div>
@@ -233,8 +231,8 @@ export default function HistorySection() {
     <section id="historia" ref={section} data-expo-steps="custom"><div className="wrap">
       <SectionHead tag="Historia" title="Veinte siglos mirando la luz" lead="Dos historias que se cruzan: primero se entendió cómo rebota la luz y luego cómo se dobla. Elige una y recorre sus descubrimientos." />
       <Reveal><LanePicker lane={lane} onPick={setLane} /></Reveal>
-      <ScrollStory key={lane} events={events} controls={controls} />
-      <VerticalTimeline key={lane} events={events} />
+      <ScrollStory key={"story-" + lane} events={events} controls={controls} />
+      <VerticalTimeline key={"list-" + lane} events={events} />
       <div ref={complement}><Complement open={info} onToggle={() => setInfo((value) => !value)} /></div>
     </div></section>
   )

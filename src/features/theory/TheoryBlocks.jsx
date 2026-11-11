@@ -65,11 +65,11 @@ export function Direction() {
     <div className="tdir">
       <figure>
         <SnellFigure a1={45} a2={toWater} top="aire · n = 1" bottom="agua · n = 1,33" labels={['45°', `${Math.round(toWater)}°`]} shade="bottom" />
-        <figcaption><b>Más denso</b> (aire → agua): la luz <b>se frena</b> y <b>se acerca</b> a la normal.</figcaption>
+        <figcaption><b>Mayor n</b> (aire → agua): la luz <b>se frena</b> y <b>se acerca</b> a la normal.</figcaption>
       </figure>
       <figure>
         <SnellFigure a1={30} a2={toAir} top="agua · n = 1,33" bottom="aire · n = 1" labels={['30°', `${Math.round(toAir)}°`]} />
-        <figcaption><b>Menos denso</b> (agua → aire): la luz <b>se acelera</b> y <b>se aleja</b> de la normal.</figcaption>
+        <figcaption><b>Menor n</b> (agua → aire): la luz <b>se acelera</b> y <b>se aleja</b> de la normal.</figcaption>
       </figure>
     </div>
   )

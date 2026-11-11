@@ -4,28 +4,41 @@
 .prb-tab:hover{transform:translateY(-2px)}
 .prb-tab b{position:relative;z-index:1;color:var(--ink);font-size:1rem}
 .prb-tab span{position:relative;z-index:1;font-size:.85rem}
-.prb-tab.on{border-color:var(--c)}
-.prb-tabbg{position:absolute;inset:0;border-radius:15px;background:color-mix(in srgb,var(--c) 16%,transparent)}
-.prb-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:24px;align-items:start}
+.prb-tab.on{border-color:var(--at);box-shadow:0 0 0 2px var(--at)}
+.prb-tabbg{position:absolute;inset:0;border-radius:15px;background:color-mix(in srgb,var(--at) 16%,transparent)}
+.prb-grid{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,5fr);gap:24px;align-items:start}
 .prb-left{position:sticky;top:100px;display:grid;gap:12px}
 .prb-img{margin:0;padding:12px;border-radius:22px;background:#fff;border:1px solid var(--line);box-shadow:0 20px 50px -34px var(--c)}
 .prb-img img{display:block;width:100%;height:auto;border-radius:12px}
+.pm-wrap{position:relative}
+.pm-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.pm-line{fill:none;stroke-width:6;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:0;animation:pm-draw .8s var(--ease) both}
+.pm-line.pm-normal{stroke:#64748b;stroke-width:4;stroke-dasharray:.04 .03;animation:pm-fade .6s var(--ease) both}
+.pm-line.pm-ray{stroke:#0e9f6e}.pm-line.pm-out{stroke:#e8590c}.pm-line.pm-angle{stroke:#6d28d9;stroke-width:5}
+.pm-fill.pm-ray{fill:#0e9f6e}.pm-fill.pm-out{fill:#e8590c}
+/* Label plates: solid, high-contrast fills with white text (the old white plates with colored outlines were hard to read at small sizes, especially the purple ones). */
+.pm-pill rect{fill:#1b2030;stroke:#fff;stroke-width:3.5;paint-order:stroke;filter:drop-shadow(0 4px 9px rgba(10,14,30,.4))}
+.pm-pill text{stroke:none;font-family:"Instrument Sans","Bricolage Grotesque",system-ui,sans-serif;font-weight:700;letter-spacing:.01em;font-variant-numeric:tabular-nums;fill:#fff;dominant-baseline:auto}
+.pm-pill.pm-info rect{fill:#0e6478}.pm-pill.pm-angle rect{fill:#6d28d9}.pm-pill.pm-out rect{fill:#c2410c}.pm-pill.pm-result rect{fill:#047857}
+.pm-pill.pm-ask rect{fill:#fff;stroke:#c2410c;stroke-dasharray:10 7}.pm-pill.pm-ask text{fill:#9a3412}
+.pm-pop{transform-box:fill-box;transform-origin:center;animation:pm-pop .55s cubic-bezier(.34,1.56,.64,1) .25s both}
+@keyframes pm-draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+@keyframes pm-fade{from{opacity:0}}
+@keyframes pm-pop{from{opacity:0;transform:scale(.6)}}
+@media (prefers-reduced-motion:reduce){.pm-line,.pm-pop,.pm-normal{animation:none}}
 .prb-img figcaption{padding:10px 6px 2px;text-align:center;font-size:.85rem;color:#4a4f6a}
 .prb-sol{display:grid;gap:14px;min-width:0}
 .prb-ctl{display:flex;flex-wrap:wrap;gap:10px}
 .prb-steps{list-style:none;margin:0;padding:0;display:grid;gap:12px}
 .prb-step{display:grid;grid-template-columns:36px minmax(0,1fr);gap:14px;align-items:start;padding:14px 18px 16px;border-radius:18px;background:var(--surf);border:1px solid var(--line);border-left:4px solid var(--c);scroll-margin-bottom:120px;transition:box-shadow .4s,border-color .4s}
-.prb-step>i{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--c);color:#080a18;font:800 .9rem "Instrument Sans",sans-serif;font-style:normal}
+.prb-step>i{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--g1);color:var(--on);font:800 .9rem "Instrument Sans",sans-serif;font-style:normal}
 .prb-step h4{margin:2px 0 4px;font-size:1.02rem}
 .prb-step p{margin:0;color:var(--mute);line-height:1.6;font-size:.96rem}
 .prb-step .eq{display:inline-block;margin-top:8px;padding:6px 12px;border-radius:10px;background:color-mix(in srgb,var(--c) 14%,transparent);color:var(--ink);font-weight:700;font-size:.98rem;line-height:1.4}
 .prb-step.latest{box-shadow:0 0 0 2px color-mix(in srgb,var(--c) 55%,transparent),0 14px 34px -22px var(--c);animation:prb-latest 1.6s ease-out}
 @keyframes prb-latest{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--c) 70%,transparent)}100%{box-shadow:0 0 0 14px transparent}}
-.prb-diagram{margin:0;padding:10px 12px 8px;border-radius:20px;background:var(--surf);border:1px solid color-mix(in srgb,var(--c) 40%,var(--line))}
-.prb-diagram .hfig{max-height:230px;margin:0 auto}
-.prb-diagram figcaption{margin-top:4px;text-align:center;font-size:.82rem;color:var(--mute)}
 .prb-ans{display:flex;align-items:center;gap:18px;padding:16px 22px;border-radius:20px;background:linear-gradient(120deg,color-mix(in srgb,var(--c) 30%,transparent),color-mix(in srgb,var(--c) 10%,transparent));border:1px solid var(--c)}
-.prb-key{display:grid;place-items:center;width:54px;height:54px;border-radius:16px;background:var(--c);color:#080a18;font:800 1.5rem "Bricolage Grotesque",system-ui,sans-serif}
+.prb-key{display:grid;place-items:center;width:54px;height:54px;border-radius:16px;background:var(--g1);color:var(--on);font:800 1.5rem "Bricolage Grotesque",system-ui,sans-serif}
 .prb-ans small{display:block;font:700 .75rem "Instrument Sans",sans-serif;text-transform:uppercase;letter-spacing:.08em;color:var(--mute)}
 .prb-ans strong{font:800 1.8rem/1.1 "Bricolage Grotesque",system-ui,sans-serif;color:var(--ink)}
 .prb-ans p{margin:2px 0 0;color:var(--mute);font-size:.92rem}
@@ -37,8 +50,8 @@
 /* Presentation mode: the statement stays in view while the steps appear one by one */
 html.expo .prb-ctl{display:none}
 html.expo .prb-left{top:14px}
-html.expo .prb-img img{max-height:40vh;width:auto;max-width:100%;margin:0 auto}
-html.expo .prb-diagram .hfig{max-height:26vh}
+/* The statement is as tall as 56 % of the screen at most; the box keeps the image's proportions, so the drawn marks stay aligned */
+html.expo .prb-img .pm-wrap{width:min(100%,calc(56vh*var(--pm-w)/var(--pm-h)));margin:0 auto}
 html.expo .prb-tabs{margin:14px 0 12px}
 html.expo .prb-step{padding:11px 16px 12px}
 html.expo .prb-step h4{font-size:.95rem}

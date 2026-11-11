@@ -54,3 +54,55 @@ export function fanAngles(centralDirection) {
   const base = Math.atan2(centralDirection[1], centralDirection[0]), side = base < 0 ? -1 : 1
   return FAN_WAVELENGTHS.map((_, i) => base + side * ((i - CENTER_INDEX) / CENTER_INDEX) * FAN_HALF_SPREAD)
 }
+
+/** Number of wavelength samples that paint the continuous spectrum wedge (red first). */
+export const WEDGE_SAMPLES = 48
+const WEDGE_RED_NM = 680, WEDGE_VIOLET_NM = 410
+/** Inside the glass the colors have only started to separate: a small share of the spread they have after the exit. */
+const INSIDE_HALF_SPREAD = 0.03
+
+/** Wavelength (nm) of wedge sample `j`, from red to violet. */
+export const wedgeWavelength = (j) => WEDGE_RED_NM + ((WEDGE_VIOLET_NM - WEDGE_RED_NM) * j) / (WEDGE_SAMPLES - 1)
+
+const distanceToSegment = (point, a, b) => {
+  const dx = b[0] - a[0], dy = b[1] - a[1], t = Math.max(0, Math.min(1, ((point[0] - a[0]) * dx + (point[1] - a[1]) * dy) / (dx * dx + dy * dy)))
+  return Math.hypot(point[0] - (a[0] + t * dx), point[1] - (a[1] + t * dy))
+}
+
+/** The prism edge closest to `point` (the face the beam leaves through), as [start, end]. */
+function nearestEdge(vertices, point) {
+  let best = null, bestDistance = Infinity
+  vertices.forEach((vertex, i) => {
+    const next = vertices[(i + 1) % vertices.length], distance = distanceToSegment(point, vertex, next)
+    if (distance < bestDistance) { bestDistance = distance; best = [vertex, next] }
+  })
+  return best
+}
+
+/** Point where the ray (origin, angle) crosses the infinite line through a and b, or null when they are parallel. */
+function crossLine(origin, angle, a, b) {
+  const rx = Math.cos(angle), ry = Math.sin(angle), ex = b[0] - a[0], ey = b[1] - a[1], denominator = rx * ey - ry * ex
+  if (Math.abs(denominator) < 1e-9) return null
+  const t = ((a[0] - origin[0]) * ey - (a[1] - origin[1]) * ex) / denominator
+  return t > 0 ? [origin[0] + rx * t, origin[1] + ry * t] : null
+}
+
+/**
+ * The spectrum as a continuous wedge. Every sample is `{ start, angle }`: where that color meets the exit face and the
+ * direction it leaves in. Inside the glass the colors already fan out a little (from the entry point to their own `start`)
+ * and after the face they spread much more, which is what a real prism does.
+ */
+export function spectrumRays(exit, rotation, spreadScale = 1) {
+  const face = nearestEdge(rotateVertices(HERO_PRISM_VERTICES, rotation), exit.to)
+  const insideAngle = Math.atan2(exit.to[1] - exit.from[1], exit.to[0] - exit.from[0]), outAngle = Math.atan2(exit.direction[1], exit.direction[0]), side = outAngle < 0 ? -1 : 1
+  return Array.from({ length: WEDGE_SAMPLES }, (_, j) => {
+    const u = -1 + (2 * j) / (WEDGE_SAMPLES - 1)
+    return { start: (face && crossLine(exit.from, insideAngle + side * u * INSIDE_HALF_SPREAD, face[0], face[1])) || exit.to, angle: outAngle + side * u * FAN_HALF_SPREAD * spreadScale }
+  })
+}
+
+/** Brightness of each wedge sample: the eye (and a real spectrum on a dark wall) is dimmer at the violet and red ends. */
+export const wedgeWeight = (j) => {
+  const t = j / (WEDGE_SAMPLES - 1), ends = Math.min(t, 1 - t)
+  return 0.5 + 0.5 * Math.min(1, ends / 0.22)
+}

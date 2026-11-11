@@ -8,8 +8,8 @@ td.good{color:#3fe3a0;font-weight:700}
   .tw input{width:62px;padding:8px 6px;font-size:1rem}
 }
 
-/* Setup lab: the group's real experiment (container, water, milk, green laser) */
-.slab{margin:30px 0 38px;padding:24px 26px;border-radius:26px;background:var(--surf);border:1px solid var(--line);box-shadow:0 18px 40px -36px color-mix(in srgb,#3dff7a 28%,transparent)}
+/* Setup lab: the group's real experiment (container, water, milk, red laser) */
+.slab{margin:30px 0 38px;border-top:4px solid #ff4d4d;padding:24px 26px;border-radius:26px;background:var(--surf);border:1px solid var(--line);box-shadow:0 18px 40px -36px color-mix(in srgb,#ff4d4d 28%,transparent)}
 .slab-grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:22px;align-items:center;margin-top:18px}
 .slab-fig{position:relative;border-radius:20px;background:#0a0d22;border:1px solid var(--line);padding:8px;overflow:hidden}
 .slab-svg{display:block;width:100%;height:auto}
@@ -25,6 +25,12 @@ td.good{color:#3fe3a0;font-weight:700}
 .slab-drop{opacity:.55;animation:slabdrift 5s ease-in-out infinite alternate}
 @keyframes slabdrift{from{transform:translate(0,0);opacity:.35}to{transform:translate(5px,-4px);opacity:.7}}
 .slab-side{display:grid;gap:16px}
+.slab-presets{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:-6px}
+.slab-preset{display:grid;gap:1px;justify-items:center;padding:8px 6px;border-radius:14px;border:1.5px solid var(--bd);background:transparent;color:var(--ink);cursor:pointer;font:inherit;transition:background .2s,border-color .2s,transform .16s}
+.slab-preset b{font:800 1.05rem "Bricolage Grotesque",system-ui,sans-serif}.slab-preset span{font-size:.8rem;color:var(--mute)}
+.slab-preset:hover{border-color:#ff4d4d}.slab-preset:active{transform:scale(.97)}
+.slab-preset.on{background:color-mix(in srgb,#ff4d4d 16%,transparent);border-color:#ff4d4d}
+.slab-presethint{margin-top:-8px;color:var(--mute);font-size:.88rem;line-height:1.4;min-height:2.4em}
 .slab-control label{display:flex;justify-content:space-between;gap:10px;font-weight:600;margin-bottom:6px}
 .slab-control label b{color:var(--ink);font-variant-numeric:tabular-nums}
 .slab-control small{display:block;margin-top:4px;color:var(--mute);font-size:.82rem}

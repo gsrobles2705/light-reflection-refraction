@@ -1,7 +1,7 @@
 # Architecture
 
 "Luz en Movimiento" is a **static single-page application** (React + Vite). It has no backend and needs none:
-all the physics runs in the browser and the only persistence is `localStorage`. The architecture therefore optimizes for
+all the physics runs in the browser and student activity is not persisted. The architecture therefore optimizes for
 what actually changes in this project: **content** (edited by students), **sections** (added over time) and **drawing code**
 (the most intricate part), while keeping the **physics** isolated and testable.
 
@@ -67,7 +67,6 @@ domain/
   rayTracing.js       traceThroughPolygons, pointInPolygon
   prism.js            prism geometry, per-wavelength tracing, comfortable rotation, color recombination
   interfaceModel.js   physics of a ray at a boundary or through a slab
-  experiment.js       result rows, average index, TSV/CSV export for the real experiment
   virtualLab.js       reading validation and grading rules of the virtual lab
 rendering/
   laser.js            drawBeam / drawLaser (canvas; SVG twin in components/LaserSvg.jsx)
@@ -76,8 +75,8 @@ rendering/
 features/prism-lab/   PrismLabSection (state/layout) · PrismCanvas (pointer input) · usePrismAnimation (easing loop)
                       usePrismScrollStory (scroll → step) · interaction.js (hit testing / drag → settings)
 features/simulator/   SimulatorSection (state) · SimulatorCanvas · ControlPanel · Readouts · scenarios · explanation
-features/experiment/  ExperimentSection · VirtualLab (+ useVirtualLab, ProtractorFigure) · ResultsTable · StepChecklist · PhotoGallery
-features/hero/        Hero · Hero3D (React wrapper) · heroScene (Three.js) · heroBeam (optics) · Hero2DFallback · JoinCard
+features/experiment/  ExperimentSection · VirtualLab (+ useVirtualLab, ProtractorFigure)
+features/hero/        Hero · Hero3D (React wrapper) · heroScene (Three.js) · heroBeam (optics) · Hero2DFallback
 features/present/     PresentBar + hooks: slides, fullscreen, idle timeout, timer, keyboard
 ```
 
@@ -96,7 +95,6 @@ These are the interfaces other modules rely on. Changing them means updating cal
 | `buildPrismGeometry(settings)` | `{ center, polygons }` (1 prism, or 2 with `newtonPair`) in lab pixels |
 | `traceWavelength(settings, nm, geometry)` | trace + `{ index, deviation }` |
 | `solveInterface(scene)` | `{ n1, n2, incident, totalInternalReflection, refractedAngle, refractedDegrees, criticalDegrees, lateralShiftCm }` |
-| `buildResultRows(rawReadings)` | one row per incidence angle; invalid readings produce rows without `index`/`errorPercent` |
 
 **Rendering**
 
@@ -136,8 +134,7 @@ shows only that section, full screen. Every section works unchanged inside a sli
   of the simulator (arrows, Shift for bigger steps), skip link, focus handling in presentation mode.
 - **Motion:** every animation honors `prefers-reduced-motion` (CSS, motion's `MotionConfig`, and the canvas loops).
 - **Touch:** canvases never trap page scrolling; `useTouchGuard` blocks scroll only when a handle is grabbed.
-- **Persistence:** `useStoredState` wraps `localStorage` (`luz.steps`, `luz.meas`, `luz.problems`). Failures fall back to
-  memory. The problems store accepts both the current and the legacy field names.
+- **Persistence:** none. The page stores nothing in the browser.
 - **Performance:** Three.js is a lazy chunk; animations pause off-screen (hero scene, prism lab); the canvas pixel ratio is capped at 2.
 - **Security:** no secrets, no network calls apart from Google Fonts in `index.html`; the only runtime configuration
   is the public `VITE_SITE_URL`.

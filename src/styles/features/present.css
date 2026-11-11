@@ -28,8 +28,10 @@ html.expo header{opacity:0;pointer-events:none;transform:translateY(-100%);trans
   #expobar kbd{display:none}
   #expobar button:not([aria-label^="Sección"]){padding:8px 12px}
 }
+/* Phones keep the toolbar (previous / next / reveal / exit) so there is always a way out; only the extras are dropped */
 @media (max-width:700px){
-  #expobar{display:none}
+  #expobar{max-width:calc(100vw - 16px)}
+  #expobar .expoprog,#expobar .expotimer,#expobar .expoind em{display:none}
 }
 /* Presentation mode: each section is a full-screen slide with room reserved for the toolbar; the toolbar is centered and compact */
 html.expo #th{display:none}
@@ -39,6 +41,7 @@ html.expo main>section{display:none!important}
 html.expo main>section.expo-cur{display:flex!important;flex-direction:column;position:fixed;inset:0;z-index:40;overflow-y:auto;overflow-x:hidden;box-sizing:border-box;background:var(--bg);padding:clamp(16px,3.5vh,44px) 0 104px;min-height:0;outline:none;animation:slidein .4s cubic-bezier(.23,1,.32,1)}
 html.expo main>section.alt.expo-cur{background:var(--surf)}
 html.expo main>section.expo-cur>*{width:100%}
+html.expo #inicio .hero-share{width:fit-content;max-width:min(560px,calc(100vw - 32px));right:clamp(16px,4vw,64px);box-sizing:border-box}
 html.expo main>section.expo-cur>.wrap{margin-top:auto;margin-bottom:auto}
 /* vertical centering that never clips the start when the content is taller */
 html.expo .foot,html.expo #th,html.expo header{display:none}
@@ -72,7 +75,7 @@ html.expo .foot,html.expo #th,html.expo header{display:none}
 .exlaunch{position:relative;display:flex}
 #expobar .exfab{width:46px;height:46px;min-height:0;padding:0;justify-content:center;border-radius:50%;opacity:.85;transition:opacity .2s,transform .25s cubic-bezier(.34,1.56,.64,1)}
 #expobar .exfab:hover,#expobar .exfab[aria-expanded=true]{opacity:1;transform:scale(1.08)}
-.exmenu{position:absolute;left:0;bottom:calc(100% + 10px);display:grid;gap:8px;min-width:max-content;padding:8px;border-radius:20px;background:color-mix(in srgb,var(--bg) 88%,transparent);border:1px solid var(--line);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 18px 44px -16px rgba(0,0,0,.7);animation:exin .22s cubic-bezier(.23,1,.32,1);transform-origin:bottom left}
+.exmenu{position:absolute;left:0;bottom:calc(100% + 10px);display:grid;gap:8px;min-width:max-content;padding:8px;border-radius:20px;background:color-mix(in srgb,var(--bg) 88%,transparent);border:1px solid var(--line);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 18px 44px -16px rgba(0,0,0,.7);transform-origin:bottom left}
 #expobar .exmenu button{justify-content:flex-start;width:100%;white-space:nowrap}
 #expobar .exmenu kbd{display:inline-block!important;margin-left:auto}
 @keyframes exin{from{opacity:0;transform:translateY(8px) scale(.96)}}
@@ -168,3 +171,25 @@ html.expo main>section.expo-cur :is(button,a,input,select,textarea,canvas,summar
 @keyframes stepnudge{0%,100%{transform:translateY(0)}50%{transform:translateY(3px)}}
 @media (prefers-reduced-motion:reduce){#expobar.expo .estep{animation:none}html.expo .step-unit:not(.step-in){transform:none}}
 html.expo .step-unit{scroll-margin-bottom:120px}
+
+/* Revealing a block scrolls it into view: keep it clear of the toolbar instead of hiding it underneath */
+html.expo .step-unit,html.expo .prb-step{scroll-margin:24px 0 124px}
+
+/* On wide screens the launcher says what it is (and its shortcut) instead of being an unlabeled icon */
+#expobar .exfab-txt{display:none}
+@media (min-width:900px){
+  #expobar .exfab{width:auto;padding:0 18px 0 14px;gap:9px;border-radius:999px}
+  #expobar .exfab-txt{display:inline-flex;align-items:center;gap:7px;font-size:.88rem;font-weight:700}
+  #expobar .exfab[aria-expanded=true] .exfab-txt{display:none}
+  #expobar .exfab-txt kbd{font:700 .72rem ui-monospace,Menlo,Consolas,monospace;padding:1px 6px;border-radius:5px;border:1px solid currentColor;opacity:.7}
+}
+
+/* Clicking is how the slides advance: it must never select text by accident (fields keep normal selection) */
+html.expo main{-webkit-user-select:none;user-select:none}
+html.expo main input,html.expo main textarea{-webkit-user-select:text;user-select:text}
+/* Reminder shown for a few seconds when the presentation starts */
+.exhint{position:fixed;left:50%;bottom:84px;transform:translateX(-50%);z-index:90;margin:0;padding:10px 18px;max-width:calc(100vw - 24px);border-radius:999px;border:1px solid var(--bd);background:color-mix(in srgb,var(--surf) 94%,transparent);backdrop-filter:blur(8px);box-shadow:0 12px 30px -14px rgba(0,0,0,.6);color:var(--mute);font-size:.9rem;text-align:center;animation:exhint-in .35s var(--ease) both,exhint-out .5s 5.5s ease forwards;pointer-events:none}
+.exhint b{color:var(--ink)}
+@keyframes exhint-in{from{opacity:0;transform:translate(-50%,8px)}to{opacity:1;transform:translate(-50%,0)}}
+@keyframes exhint-out{to{opacity:0}}
+@media (prefers-reduced-motion:reduce){.exhint{animation:none}}

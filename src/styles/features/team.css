@@ -1,11 +1,29 @@
 /* Team section. */
-/* Team: two columns on phones */
+/* Team: auto-fill grid on desktop (theme.css), two columns on phones. Integrantes is the one centered section: short content made of cards, and the last row stays centered. */
 @media (max-width:700px){
   .team{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-  .member-w{flex:none;min-width:0}
   .member{padding:16px 10px}
   .member .av{width:56px;height:56px;margin-bottom:10px;font-size:1.05rem}
   .member h3{font-size:.95rem;overflow-wrap:anywhere}
   .member p{font-size:.8rem}
-  .team>.member-w:last-child:nth-child(odd){grid-column:1/-1;width:calc(50% - 6px);justify-self:center}
+}
+
+/* Centered heading and cards (7 members: 4 + 3, the second row centered) */
+#integrantes .wrap>.rv:first-child{text-align:center}
+#integrantes .lead{margin-inline:auto}
+#integrantes .tag{justify-content:center}
+@media (min-width:701px){
+  .team{display:flex;flex-wrap:wrap;justify-content:center;gap:16px}
+  .member-w{flex:0 1 232px}
+}
+#integrantes .team{margin-top:36px}
+
+/* One line on wide screens: seven compact cards side by side */
+@media (min-width:1100px){
+  #integrantes .team{flex-wrap:nowrap;gap:12px}
+  #integrantes .member-w{flex:1 1 0;min-width:0}
+  #integrantes .member{padding:20px 10px}
+  #integrantes .member .av{width:58px;height:58px;font-size:1.05rem;margin-bottom:12px}
+  #integrantes .member h3{font-size:.95rem;overflow-wrap:anywhere}
+  #integrantes .member p{font-size:.82rem}
 }

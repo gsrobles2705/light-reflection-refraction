@@ -4,7 +4,7 @@ import { toRadians } from '../../domain/units.js'
 import { wavelengthToCss } from '../../domain/spectrum.js'
 
 const ORIGIN = [200, 140]
-const RAY_COLOR = wavelengthToCss(550)   // same green as the simulator's laser
+const RAY_COLOR = wavelengthToCss(650)   // same red as the group's laser
 const TICK_STEP = 5
 const LABEL_STEP = 15
 const TICK_ANGLES = Array.from({ length: 90 / TICK_STEP + 1 }, (_, i) => i * TICK_STEP)

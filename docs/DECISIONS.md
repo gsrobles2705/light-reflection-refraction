@@ -4,7 +4,7 @@ Short records of the decisions that shaped the project. Format: context → deci
 
 ## ADR-1 · Keep a static React + Vite SPA (no backend, no microservices)
 **Context.** The product is a classroom web page: no accounts, no shared state, no server-side secrets.
-**Decision.** Stay with React 19 + Vite, JavaScript/JSX, static hosting. Persist only in `localStorage`.
+**Decision.** Stay with React 19 + Vite, JavaScript/JSX and static hosting. Do not persist student activity or inputs.
 **Consequences.** Zero operations cost and trivial deployment. Anything needing shared data (a class leaderboard, say) would
 require a backend; that would be a new module, not a reason to split what exists.
 

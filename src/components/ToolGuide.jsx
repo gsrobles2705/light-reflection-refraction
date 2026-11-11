@@ -4,9 +4,10 @@
  * @param {{ tools: { id: string, name: string, verb: string, color: string, use: string, not: string }[], active: string }} props
  */
 export default function ToolGuide({ tools, active }) {
-  const current = tools.find((tool) => tool.id === active)
+  const position = tools.findIndex((tool) => tool.id === active), current = tools[position]
   return (
     <div className="tguide" style={{ '--c': current.color }}>
+      <span className="tguide-step">Herramienta {position + 1} de {tools.length}</span>
       <ol className="tguide-row" aria-label="Las tres herramientas interactivas">
         {tools.map((tool, i) => (
           <li key={tool.id} className={tool.id === active ? 'on' : ''} style={{ '--c': tool.color }} aria-current={tool.id === active ? 'step' : undefined}>

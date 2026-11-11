@@ -17,5 +17,5 @@ export const COMPARISON_ROWS = [
 export const QUICK_SUMMARY = [
   { topic: 'reflexion', tag: 'Reflexión', color: '#ffb347', text: 'La luz rebota y se cumple que el ángulo de incidencia es igual al de reflexión.', math: 'θᵢ = θᵣ' },
   { topic: 'refraccion', tag: 'Refracción', color: '#4de3ff', text: 'La luz cambia de dirección al cambiar de medio, porque cambia su velocidad.' },
-  { topic: 'refraccion', tag: 'Densidad', color: '#a98bff', text: 'En un medio más denso se acerca a la normal; en uno menos denso, se aleja.' },
+  { topic: 'refraccion', tag: 'Índice n', color: '#a98bff', text: 'Si el segundo medio tiene mayor n, el rayo se acerca a la normal; si tiene menor n, se aleja.' },
 ]

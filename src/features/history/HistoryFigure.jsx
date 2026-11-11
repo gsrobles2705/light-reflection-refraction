@@ -46,6 +46,25 @@ const waveFront = (x) => 120 + (56 - WAVE_K*(x - 90))/Math.cos(WAVE_ANGLE_2)
 const LENS_RAYS = [70, 95, 120, 145, 170].map((y) => { const edge = 22.5*(1 - ((y - 120)/80)**2); return { y, left: 160 - edge, right: 160 + edge } })
 const SPECTRUM = ['#ff5a5a', '#ffa94d', '#ffe14d', '#6ee07a', '#4db8ff', '#a98bff']
 
+/** Color at `t` (0 = red end, 1 = violet end) of the spectrum, blended between the stops above. */
+const spectrumAt = (t) => {
+  const position = Math.min(0.9999, Math.max(0, t))*(SPECTRUM.length - 1), index = Math.floor(position), mix = position - index
+  const channel = (hex, k) => parseInt(hex.slice(1 + 2*k, 3 + 2*k), 16)
+  return '#' + [0, 1, 2].map((k) => Math.round(channel(SPECTRUM[index], k)*(1 - mix) + channel(SPECTRUM[index + 1], k)*mix).toString(16).padStart(2, '0')).join('')
+}
+/**
+ * A continuous rainbow wedge from `apex` to the vertical edge at x = `edgeX` between `top` (red) and `bottom` (violet):
+ * many thin triangles of blended colors, so no seams or separate stripes show.
+ */
+const Rainbow = ({ apex, edgeX, top, bottom, steps = 36, delay = 0 }) => (
+  <g className="dgfade" style={{ '--d': `${delay}ms` }}>
+    {Array.from({ length: steps }, (_, i) => {
+      const y1 = top + (bottom - top)*i/steps, y2 = top + (bottom - top)*(i + 1)/steps, color = spectrumAt((i + 0.5)/steps)
+      return <polygon key={i} points={`${apex[0]},${apex[1]} ${edgeX},${y1} ${edgeX},${y2 + 0.4}`} fill={color} stroke={color} strokeWidth="0.5" strokeLinejoin="round" />
+    })}
+  </g>
+)
+
 const FIGURES = {
   rays: () => (<>
     <ellipse cx="50" cy="120" rx="26" ry="16" fill="none" stroke="var(--ink)" strokeWidth="2.5" opacity=".8" />{dot(50, 120, 7)}
@@ -129,10 +148,10 @@ const FIGURES = {
   prism: () => (<>
     <polygon points="150,40 100,160 200,160" fill="var(--c)" opacity=".16" stroke="var(--c)" strokeWidth="2.5" strokeLinejoin="round" />
     <Ray from={[10, 118]} to={[121.7, 108]} width={4} /><Arrow from={[10, 118]} to={[121.7, 108]} position={0.5} />
-    <Ray from={[121.7, 108]} to={[182.5, 118]} width={3} delay={450} />
-    <polygon className="dgfade" points="182.5,118 312,162 312,197" fill="var(--c)" opacity=".1" style={{ '--d': '1000ms' }} />
-    {SPECTRUM.map((color, i) => <path key={color} className="draw" pathLength="1" d={`M182.5 118 L312 ${162 + i*7}`} fill="none" stroke={color} strokeWidth="3" strokeLinecap="round" style={{ '--d': `${800 + i*120}ms` }} />)}
-    <Caption x="12" y="104">luz blanca</Caption><Caption x="308" y="148" anchor="end">rojo</Caption><Caption x="308" y="216" anchor="end">violeta</Caption><Caption x="150" y="184" anchor="middle">prisma</Caption>
+    <Rainbow apex={[121.7, 108]} edgeX={182.5} top={115.5} bottom={120.5} steps={14} delay={500} />
+    <Rainbow apex={[182.5, 118]} edgeX={312} top={146} bottom={214} delay={900} />
+    <circle cx="182.5" cy="118" r="9" fill="#fff" opacity=".55" /><circle cx="182.5" cy="118" r="3.6" fill="#fff" />
+    <Caption x="12" y="104">luz blanca</Caption><Caption x="308" y="138" anchor="end">rojo</Caption><Caption x="308" y="232" anchor="end">violeta</Caption><Caption x="150" y="184" anchor="middle">prisma</Caption>
     <Summary x="160" y="258" anchor="middle">n rojo ≈ 1,51 · n violeta ≈ 1,53</Summary>
   </>),
   wave: () => {

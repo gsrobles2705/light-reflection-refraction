@@ -94,7 +94,7 @@ function drawCriticalAngle(ctx, model, palette, drawTag, scale) {
   const { surfaceY, criticalDegrees } = model, theta = -Math.PI / 2 - toRadians(criticalDegrees)
   ctx.setLineDash([3, 6]); ctx.strokeStyle = palette.err; ctx.lineWidth = 1.6
   ctx.beginPath(); ctx.moveTo(CX, surfaceY); ctx.lineTo(CX + Math.cos(theta) * 200, surfaceY + Math.sin(theta) * 200); ctx.stroke(); ctx.setLineDash([])
-  drawTag('θc = ' + criticalDegrees.toFixed(1) + '°', CX + Math.cos(theta) * 178, surfaceY + Math.sin(theta) * 178 - 14 * scale, palette.err, 12)
+  drawTag('θc = ' + criticalDegrees.toFixed(1).replace('.', ',') + '°', CX + Math.cos(theta) * 178, surfaceY + Math.sin(theta) * 178 - 14 * scale, palette.err, 12)
 }
 
 function drawSlabGuide(ctx, scene, model, palette) {
@@ -113,8 +113,9 @@ function drawRayNames(model, palette, drawTag, scale) {
 }
 
 /** Angle arc + label; in narrow wedges the label moves away from the rays. */
-function drawAngleArc(ctx, drawTag, scale, { cx, cy, from, to, radius, color, label, side }) {
-  ctx.strokeStyle = color; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.arc(cx, cy, radius, from, to); ctx.stroke()
+function drawAngleArc(ctx, drawTag, scale, { cx, cy, from, to, radius, color, label, side, dashed = false }) {
+  ctx.strokeStyle = color; ctx.lineWidth = 2.5; ctx.setLineDash(dashed ? [2, 5] : []); ctx.lineCap = dashed ? 'round' : 'butt'
+  ctx.beginPath(); ctx.arc(cx, cy, radius, from, to); ctx.stroke(); ctx.setLineDash([]); ctx.lineCap = 'butt'
   const middle = (from + to) / 2, narrow = Math.abs(to - from) < NARROW_WEDGE
   const labelX = narrow ? cx + (side === -1 ? -1 : 1) * 58 * scale : cx + Math.cos(middle) * (radius + 34 * scale)
   const labelY = narrow ? cy + (side === 2 ? 98 : -98) : cy + Math.sin(middle) * (radius + 24 * scale)
@@ -122,21 +123,21 @@ function drawAngleArc(ctx, drawTag, scale, { cx, cy, from, to, radius, color, la
 }
 
 function drawAngleArcs(ctx, scene, model, palette, drawTag, scale) {
-  const { surfaceY, slabBottomY, refractedAngle, refractedDegrees } = model, incident = toRadians(scene.incidentAngle), degrees = scene.incidentAngle.toFixed(1)
+  const { surfaceY, slabBottomY, refractedAngle, refractedDegrees } = model, incident = toRadians(scene.incidentAngle), degrees = scene.incidentAngle.toFixed(1).replace('.', ',')
   const arc = (options) => drawAngleArc(ctx, drawTag, scale, options)
   arc({ cx: CX, cy: surfaceY, from: -Math.PI / 2 - incident, to: -Math.PI / 2, radius: 62, color: palette.rayT, label: `θ₁ ${degrees}°`, side: -1 })
   arc({ cx: CX, cy: surfaceY, from: -Math.PI / 2, to: -Math.PI / 2 + incident, radius: 80, color: palette.at, label: `θ₁′ ${degrees}°`, side: 1 })
-  if (!model.totalInternalReflection) arc({ cx: CX, cy: surfaceY, from: Math.PI / 2 - refractedAngle, to: Math.PI / 2, radius: 62, color: palette.bt, label: `θ₂ ${refractedDegrees.toFixed(1)}°`, side: 2 })
+  if (!model.totalInternalReflection) arc({ cx: CX, cy: surfaceY, from: Math.PI / 2 - refractedAngle, to: Math.PI / 2, radius: 62, color: palette.bt, label: `θ₂ ${refractedDegrees.toFixed(1).replace('.', ',')}°`, side: 2, dashed: true })
   const exit = model.segments.find((segment) => segment.isExit)
   if (exit) {
-    arc({ cx: exit.x1, cy: slabBottomY, from: -Math.PI / 2 - refractedAngle, to: -Math.PI / 2, radius: 46, color: palette.bt, label: `${refractedDegrees.toFixed(1)}°`, side: -1 })
+    arc({ cx: exit.x1, cy: slabBottomY, from: -Math.PI / 2 - refractedAngle, to: -Math.PI / 2, radius: 46, color: palette.bt, label: `${refractedDegrees.toFixed(1).replace('.', ',')}°`, side: -1, dashed: true })
     arc({ cx: exit.x1, cy: slabBottomY, from: Math.PI / 2 - incident, to: Math.PI / 2, radius: 52, color: palette.rayT, label: `${degrees}°`, side: 2 })
   }
 }
 
 function drawMediumNames(scene, model, palette, drawTag, scale) {
-  drawTag(`${MEDIA[scene.firstMedium].name} · n = ${model.n1.toFixed(3)}`, 16 * scale + 70 * scale, 20 * scale, palette.ink, 14)
-  drawTag(`${MEDIA[scene.secondMedium].name} · n = ${model.n2.toFixed(3)}`, 16 * scale + 70 * scale, model.surfaceY + 22 * scale, palette.ink, 14)
+  drawTag(`${MEDIA[scene.firstMedium].name} · n = ${model.n1.toFixed(3).replace('.', ',')}`, 16 * scale + 70 * scale, 20 * scale, palette.ink, 14)
+  drawTag(`${MEDIA[scene.secondMedium].name} · n = ${model.n2.toFixed(3).replace('.', ',')}`, 16 * scale + 70 * scale, model.surfaceY + 22 * scale, palette.ink, 14)
   if (scene.mode === 'slab') drawTag(MEDIA[scene.firstMedium].name, 16 * scale + 30 * scale, model.slabBottomY + 22 * scale, palette.ink, 14)
 }
 

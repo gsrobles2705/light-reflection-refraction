@@ -2,7 +2,7 @@
 // Every angle is marked with a translucent wedge plus an arc between the normal and the ray.
 
 export const ORIGIN = [160, 120]
-const format = (n) => n.toFixed(1)
+const format = (n) => n.toFixed(1)   // geometry for SVG attributes: always a decimal point
 const toRadians = (degrees) => (degrees * Math.PI) / 180
 
 /** Point at `radius` from the origin, `degrees` away from the normal (`up`: above/below the surface, `side`: -1 left, +1 right). */
@@ -39,7 +39,7 @@ export const Angle = ({ degrees, radius = 46, up, side, label, delay = 0, tick }
 export const Summary = ({ x, y, children, anchor }) => <text className="dgv dgfade" x={x} y={y} textAnchor={anchor} style={{ '--d': '1100ms' }}>{children}</text>
 export const Caption = ({ x, y, children, anchor }) => <text className="dgl" x={x} y={y} textAnchor={anchor}>{children}</text>
 
-const ALT_TEXT = ['Rayo que se refleja con ángulos iguales', 'Rayo que se acerca a la normal al entrar al agua', 'Reflexión total interna dentro del medio denso']
+const ALT_TEXT = ['Rayo que se refleja con ángulos iguales', 'Rayo que se acerca a la normal al entrar al agua', 'Reflexión total interna dentro del medio de mayor índice']
 
 /**
  * @param {{ kind: 0|1|2 }} props  0 = reflection, 1 = refraction (air → water), 2 = total internal reflection (water → air)

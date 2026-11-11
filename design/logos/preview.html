@@ -1,0 +1,10 @@
+<!doctype html><meta charset="utf-8"><title>Propuestas de logo</title>
+<style>body{margin:0;font:15px system-ui;display:grid;grid-template-columns:1fr 1fr}main{padding:28px}.l{background:#f4f6f8;color:#1b2030}.d{background:#12161c;color:#eaeef4}
+h2{margin:0 0 18px;font-size:14px;opacity:.7}.g{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}.c{text-align:center}.c img{width:92px;height:92px}.c b{display:block;margin-top:6px}.row{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:8px;font-weight:700}.row img{width:30px;height:30px}</style>
+<main class="l"><h2>Modo claro</h2><div class="g" id="a"></div></main><main class="d"><h2>Modo oscuro</h2><div class="g" id="b"></div></main>
+<script>
+const items=[['01-haz','Haz refractado'],['02-gota','Gota y arcoíris'],['03-lente','Lente que enfoca'],['04-destello','Destello espectral'],['05-monograma','L con onda'],['06-reflejo','Reflejo en espejo']]
+for(const [id,box,color] of [['a','l'],['b','d']]){}
+async function build(id,col){const el=document.getElementById(id);for(const [f,n] of items){const t=await (await fetch(f+'.svg')).text();const d=document.createElement('div');d.className='c';d.innerHTML='<div style="width:92px;height:92px;margin:auto;color:'+col+'">'+t.replace('width="256" height="256"','width="92" height="92"').replace(/color="[^"]*"/,'')+'</div><b>'+n+'</b><div class="row"><div style="width:30px;height:30px;color:'+col+'">'+t.replace('width="256" height="256"','width="30" height="30"').replace(/color="[^"]*"/,'')+'</div>Luz en Movimiento</div>';el.appendChild(d)}}
+build('a','#1b2030');build('b','#eaeef4')
+</script>

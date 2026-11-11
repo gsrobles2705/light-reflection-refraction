@@ -1,0 +1,30 @@
+/* Section flow: instead of straight horizontal cuts, each section starts with a soft wave. The wave is painted in the
+   previous section's NEUTRAL background and traced with a thin line in that section's hue (--sec).
+   Backgrounds alternate between two clearly different neutrals (--bg / --bgx); --curve is the wave height. */
+main,.foot,.xband{--curve:clamp(56px,8vw,120px);--wave-fill:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 120' preserveAspectRatio='none'%3E%3Cpath d='M0 0H1440V26C1250 104 1010 120 760 78C510 36 250 14 0 82Z'/%3E%3C/svg%3E");--wave-below:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 120' preserveAspectRatio='none'%3E%3Cpath d='M0 82C250 14 510 36 760 78C1010 120 1250 104 1440 26V120H0Z'/%3E%3C/svg%3E");--wave-line:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 120' preserveAspectRatio='none'%3E%3Cpath d='M1440 26C1250 104 1010 120 760 78C510 36 250 14 0 82' fill='none' stroke='black' stroke-width='6' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E")}
+main,.foot{--flow-a:var(--bg);--flow-b:var(--bgx)}
+main>section{background:var(--flow-a)}
+main>section:nth-child(even){background:var(--flow-b);--prev:var(--flow-a)}
+main>section:nth-child(odd){background:var(--flow-a);--prev:var(--flow-b)}
+main>section:not(:first-child){position:relative;isolation:isolate;padding-top:calc(24px + var(--curve)*1.05)}
+main>section:not(:first-child)::before,main>section:not(:first-child)::after{content:"";position:absolute;z-index:-1;top:0;left:0;right:0;height:var(--curve);pointer-events:none;
+  -webkit-mask:var(--wave-fill) 0 0/100% 100% no-repeat;mask:var(--wave-fill) 0 0/100% 100% no-repeat;background:var(--prev)}
+main>section:not(:first-child)::after{-webkit-mask-image:var(--wave-line);mask-image:var(--wave-line);background:linear-gradient(90deg,var(--ribbon),color-mix(in srgb,var(--ribbon) 40%,transparent));filter:drop-shadow(0 3px 10px color-mix(in srgb,var(--ribbon) 45%,transparent))}
+/* Every other wave is mirrored so the page does not feel stamped */
+main>section:not(:first-child):nth-child(odd)::before,main>section:not(:first-child):nth-child(odd)::after{transform:scaleX(-1)}
+@media (max-width:700px){main>section:not(:first-child){padding-top:calc(18px + var(--curve)*1.05)}}
+/* Presentation mode shows one slide at a time: no waves there */
+html.expo main>section::before,html.expo main>section::after{display:none}
+html.expo main>section:not(:first-child){padding-top:revert}
+
+/* Each section gets a soft wash of its own hue right under the wave, and a thick ribbon (a darker hue on the light theme) */
+main>section{--ribbon:var(--sec,var(--at))}
+:root:not([data-theme="dark"]) main>section{--ribbon:color-mix(in srgb,var(--sec,var(--at)) 76%,#000)}
+main>section:not(:first-child){background-image:linear-gradient(180deg,color-mix(in srgb,var(--sec,var(--at)) 16%,transparent),transparent 420px)}
+html.expo main>section{background-image:none}
+
+/* Sub-section blocks inside a section (each tool of the experiment): plain content, joined like everything else.
+   No band color and no waves of their own: the section's soft gradient at its start is the only tint. */
+.xband{position:relative;margin:0;padding:0}
+.xband+.xband{margin-top:clamp(72px,8vw,112px)}
+.xband::before,.xband::after,.xband>.xrib{display:none}

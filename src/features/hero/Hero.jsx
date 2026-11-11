@@ -1,8 +1,8 @@
 import { lazy, Suspense, useEffect, useState } from 'react'
 import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react'
-import { COURSE } from '../../config/site.js'
+import QrCode from '../../components/QrCode.jsx'
+import { COURSE_LINE, SITE_URL } from '../../config/site.js'
 import Hero2DFallback from './Hero2DFallback.jsx'
-import JoinCard from './JoinCard.jsx'
 
 // Three.js is loaded on demand: it is by far the heaviest dependency and only the hero needs it
 const Hero3D = lazy(() => import('./Hero3D.jsx'))
@@ -33,7 +33,6 @@ export default function Hero({ theme }) {
   const { scrollY } = useScroll()
   const textOffset = useTransform(scrollY, [0, 500], [0, reduceMotion ? 0 : 60])
   const textOpacity = useTransform(scrollY, [0, 500], [1, reduceMotion ? 1 : 0.2])
-  const chips = [`Curso: ${COURSE.subject}`, COURSE.classroom, COURSE.week, COURSE.term]
 
   return (
     <section id="inicio" className="hero">
@@ -42,7 +41,7 @@ export default function Hero({ theme }) {
         : <Hero2DFallback theme={theme} reduceMotion={reduceMotion} />}
       <motion.div className="wrap" style={{ y: textOffset, opacity: textOpacity }}>
         <div className="hero-txt">
-          <motion.span className="tag" {...fadeIn(0)}>Proyecto de Física · Óptica geométrica</motion.span>
+          <motion.span className="tag" {...fadeIn(0)}>{COURSE_LINE.split(' · ').map((part, i) => <span key={part} className="nw">{i > 0 && '· '}{part} </span>)}</motion.span>
           <h1 aria-label="Luz en Movimiento">
             {TITLE_LINES.map((line, i) => (
               <motion.span key={line} aria-hidden="true" initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }}
@@ -52,16 +51,18 @@ export default function Hero({ theme }) {
           <motion.p {...fadeIn(0.6)}>
             Un recorrido interactivo por la <b>reflexión</b> y la <b>refracción</b>: cómo la luz rebota, se dobla y se descompone en colores al cambiar de medio.
           </motion.p>
-          <motion.div className="meta" {...fadeIn(0.75)}>
-            {chips.map((chip) => <span className="chip" key={chip}>{chip}</span>)}<span className="chip chip-tema">Tema: {COURSE.topic}</span>
-          </motion.div>
+          <motion.p className="hero-goal" {...fadeIn(0.75)}>Al terminar podrás predecir cómo se dobla un rayo al pasar entre dos medios y comprobarlo con la ley de Snell.</motion.p>
           <motion.div className="hero-act" {...fadeIn(0.9)}>
-            <a href="#simulador" className="btn">Probar el simulador</a>
+            <a href="#simulador" className="btn">Probar el laboratorio</a>
             <a href="#experimento" className="btn ghost">Ver el experimento</a>
           </motion.div>
-          <motion.div {...fadeIn(1.05)}><JoinCard /></motion.div>
-          <motion.p className="hint" {...fadeIn(1.2)}><i aria-hidden="true" />{touchOnly() ? 'Desliza el dedo: el prisma gira y el espectro se abre.' : 'Mueve el cursor: el prisma gira y el espectro se abre.'}</motion.p>
+          <motion.p className="hint" {...fadeIn(1.2)}><i aria-hidden="true" />{touchOnly() ? 'Desliza el dedo: el prisma gira y el espectro se abre.' : 'Mueve el puntero o toca la pantalla: el prisma gira y el espectro se abre.'}</motion.p>
+          <motion.p className="hero-scale" {...fadeIn(1.3)}>Espectro ampliado para distinguir los colores; no está a escala.</motion.p>
         </div>
+      </motion.div>
+      <motion.div className="hero-share" style={{ y: textOffset, opacity: textOpacity }}>
+        <QrCode url={SITE_URL} className="hero-qr" />
+        <p><b>Compártelo con la clase</b><span>Escanea el código o escribe {SITE_URL.replace(/^https?:\/\//, '')}</span></p>
       </motion.div>
     </section>
   )

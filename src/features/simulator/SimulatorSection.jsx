@@ -34,7 +34,7 @@ export default function SimulatorSection({ theme }) {
 
   return (
     <section id="simulador" className="alt"><div className="wrap">
-      <SectionHead tag="Simulador" title="Laboratorio de luz" lead="Tu espacio libre para experimentar: mueve el láser, cambia los materiales y mira cómo se dobla, rebota o se atrapa la luz. Todo se explica solo, sin fórmulas." />
+      <SectionHead tag="Laboratorio libre" title="Laboratorio libre de luz" lead="Tu espacio libre para experimentar: mueve el láser, cambia los materiales y mira cómo se dobla, rebota o se atrapa la luz. Todo se explica solo, sin fórmulas." />
       <Reveal>
         <ToolGuide tools={TOOLS} active="laboratorio" />
         <ol className="howto">

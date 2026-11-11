@@ -11,10 +11,10 @@ export const SCENARIOS = [
   { id: 'air-to-water', icon: 'drop', label: 'Aire → agua', description: 'La luz entra al agua y se acerca a la vertical.', apply: () => ({ firstMedium: mediumIndexOf('air'), secondMedium: mediumIndexOf('water'), incidentAngle: 45, mode: 'interface' }) },
   { id: 'water-to-air', icon: 'arrowUp', label: 'Agua → aire', description: 'Sale del agua y se aleja de la vertical.', apply: () => ({ firstMedium: mediumIndexOf('water'), secondMedium: mediumIndexOf('air'), incidentAngle: 35, mode: 'interface' }) },
   {
-    id: 'critical-angle', icon: 'angle', label: 'Ángulo crítico', description: 'El ángulo justo donde la luz deja de salir.',
+    id: 'critical-angle', icon: 'angle', label: 'Ángulo crítico', description: 'El rayo sale rasante, pegado a la superficie.',
     apply: ({ wavelength, dispersion }) => {
       const glass = effectiveIndex(INDEX.glass, wavelength, dispersion), air = effectiveIndex(INDEX.air, wavelength, dispersion)
-      return { firstMedium: mediumIndexOf('glass'), secondMedium: mediumIndexOf('air'), incidentAngle: Math.floor(criticalAngleDegrees(glass, air) * 2) / 2, mode: 'interface' }   // rounded down to 0.5° so the ray still exits
+      return { firstMedium: mediumIndexOf('glass'), secondMedium: mediumIndexOf('air'), incidentAngle: criticalAngleDegrees(glass, air) - 1e-5, mode: 'interface' }   // exactly the critical angle (a hair below, so the ray still leaves): it skims along the surface, θ₂ ≈ 90°
     },
   },
   { id: 'total-reflection', icon: 'fiber', label: 'Reflexión total', description: 'Toda la luz rebota, como en la fibra óptica.', apply: () => ({ firstMedium: mediumIndexOf('water'), secondMedium: mediumIndexOf('air'), incidentAngle: 65, mode: 'interface' }) },

@@ -4,10 +4,10 @@ import { join } from 'node:path'
 import { test } from 'node:test'
 import { APPLICATIONS } from '../src/content/applications.js'
 import { CONCLUSIONS } from '../src/content/conclusions.js'
-import { EXPERIMENT_STEPS } from '../src/content/experiment.js'
 import { HISTORY } from '../src/content/history.js'
 import { NAV_ITEMS, visibleNavItems } from '../src/content/navigation.js'
 import { PRISM_STORY, SPECTRUM_CHIPS } from '../src/content/prismLab.js'
+import { PROBLEM_FIGURES } from '../src/content/problemMarks.js'
 import { PROBLEMS } from '../src/content/problems.js'
 import { MILK_ML, beamLook, beamState, levelFraction, reflectedFraction, setupReadout } from '../src/domain/setup.js'
 import { INDEX_ROWS, SNELL_EXAMPLE, THEORY_TOPICS } from '../src/content/theory.js'
@@ -79,8 +79,6 @@ test('prism story only uses known settings and the chips cover the visible spect
   assert.ok(wavelengths[0] <= 420 && wavelengths.at(-1) >= 650)
 })
 
-test('experiment steps are present', () => assert.ok(EXPERIMENT_STEPS.length >= 3 && EXPERIMENT_STEPS.every((step) => step.title && step.text)))
-
 test('solved problems: the marked option matches the computed value', () => {
   assert.deepEqual(PROBLEMS.map((problem) => problem.id), [10, 11, 13])
   for (const problem of PROBLEMS) {
@@ -89,7 +87,10 @@ test('solved problems: the marked option matches the computed value', () => {
     const closest = problem.options.reduce((best, option) => Math.abs(option.value - problem.value) < Math.abs(best.value - problem.value) ? option : best)
     assert.equal(closest.key, problem.answer, `problem ${problem.id}`)
     assert.ok(Math.abs(closest.value - problem.value) < 0.06*Math.max(1, Math.abs(problem.value)), `problem ${problem.id} value ${problem.value}`)
-    assert.ok(problem.steps.some((step) => step.figure), 'one step shows the diagram')
+    const figure = PROBLEM_FIGURES[problem.id]
+    assert.ok(figure, 'the solution is drawn on the statement image')
+    assert.ok(figure.marks.every((mark) => mark.step < problem.steps.length), 'marks belong to existing steps')
+    for (let step = 0; step < problem.steps.length; step++) assert.ok(figure.marks.some((mark) => mark.step === step), `step ${step + 1} draws something`)
   }
   assert.ok(Math.abs(PROBLEMS[0].value - 1.299) < 0.001)
   assert.ok(Math.abs(PROBLEMS[1].value - 53.13) < 0.01)
@@ -117,4 +118,8 @@ test('setup lab: water level, milk zones and the reflected light', () => {
   assert.ok(reflectedFraction(1, 1.333, 80) > reflectedFraction(1, 1.333, 45), 'more reflection at larger angles')
   const readout = setupReadout({ waterLiters: 1.9, milkMl: MILK_ML.initial, incidentDegrees: 30 })
   assert.ok(readout.refractedDegrees < 30 && readout.reflectedDegrees === 30, 'refracted ray gets closer to the normal; reflection keeps the angle')
+})
+
+test('conclusions without a diagram carry a badge', () => {
+  for (const conclusion of CONCLUSIONS) if (conclusion.diagram === null) assert.ok(conclusion.badge?.value && conclusion.badge?.text, conclusion.title)
 })

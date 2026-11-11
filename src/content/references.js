@@ -1,31 +1,30 @@
-// Sources shown in the references section. `kind`: 'book' | 'web'. `topic` says what the source is good for.
-// `url` is only set for online resources; `citation` is the text copied by the "Copiar cita" button.
-
-export const REFERENCE_GROUPS = [
-  { id: 'book', title: 'Libros', icon: 'layers' },
-  { id: 'web', title: 'Recursos en línea', icon: 'expand' },
-]
+// Sources shown in the references section, in one single list. `topic` says what the source is good for.
+// `url` is only set for online resources; the citation text is built by `citationOf` for the "Copiar cita" button.
 
 export const REFERENCES = [
   {
-    kind: 'book', title: 'Física universitaria con física moderna, vol. 2', authors: 'Young, H. D. y Freedman, R. A.', publisher: 'Pearson',
-    topic: 'Óptica geométrica: reflexión, refracción y reflexión total interna.',
+    title: 'Optics', authors: 'Encyclopaedia Britannica', publisher: 'Britannica',
+    topic: 'Panorama de la óptica y de cómo evolucionaron las ideas sobre la luz.', url: 'https://www.britannica.com/science/optics',
   },
   {
-    kind: 'book', title: 'Física para ciencias e ingeniería', authors: 'Serway, R. A. y Jewett, J. W.', publisher: 'Cengage Learning',
-    topic: 'Ley de Snell, índice de refracción y problemas resueltos.',
+    title: 'Línea de tiempo de la óptica geométrica (unidad 1)', authors: 'Facultad de Estudios Superiores Iztacala', publisher: 'UNAM',
+    topic: 'Línea de tiempo con los hitos de la óptica geométrica, ordenados por época.', url: 'https://enlinea.iztacala.unam.mx/resources/modules/OpticaGeometrica/Recursos/U1/linea-tiempo/',
   },
   {
-    kind: 'book', title: 'Óptica', authors: 'Hecht, E.', publisher: 'Addison-Wesley / Pearson',
-    topic: 'Referencia de consulta: dispersión, prismas y propagación de la luz.',
+    title: 'IV. Reflexión y refracción de la luz', authors: 'La ciencia para todos (vol. 2, n.º 107)', publisher: 'Biblioteca Digital del ILCE',
+    topic: 'Cómo se descubrieron las leyes de la reflexión y la refracción, con Snell, Descartes y Newton.', url: 'https://bibliotecadigital.ilce.edu.mx/sites/ciencia/volumen2/ciencia3/107/htm/sec_8.htm',
   },
   {
-    kind: 'web', title: 'Refraction & Snell’s law', authors: 'HyperPhysics', publisher: 'Georgia State University',
-    topic: 'Resumen claro de la ley de Snell con ejemplos numéricos.', url: 'https://hyperphysics.phy-astr.gsu.edu',
+    title: 'Bending Light (Reflexión y refracción)', authors: 'PhET Interactive Simulations', publisher: 'Universidad de Colorado Boulder',
+    topic: 'Simulación interactiva para experimentar con rayos de luz, ángulos de incidencia y la ley de Snell.', url: 'https://phet.colorado.edu/es/simulation/bending-light',
   },
   {
-    kind: 'web', title: 'Bending Light (Reflexión y refracción)', authors: 'PhET Interactive Simulations', publisher: 'University of Colorado Boulder',
-    topic: 'Simulador de referencia para comparar con nuestro laboratorio de luz.', url: 'https://phet.colorado.edu/en/simulations/bending-light',
+    title: 'Khan Academy en Español', authors: 'Khan Academy', publisher: 'Khan Academy',
+    topic: 'Lecciones guiadas, explicaciones teóricas y problemas prácticos de óptica geométrica.', url: 'https://es.khanacademy.org/',
+  },
+  {
+    title: 'Refracción de la luz', authors: 'Wikipedia, la enciclopedia libre', publisher: 'Wikipedia',
+    topic: 'Marco teórico de la refracción, velocidad de la luz en los medios y tablas de índices de refracción.', url: 'https://es.wikipedia.org/wiki/Refracci%C3%B3n_de_la_luz',
   },
 ]
 

@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js'
 import { clamp } from '../../domain/numbers.js'
 import { wavelengthToCss } from '../../domain/spectrum.js'
-import { BEAM_DIRECTION, FAN_WAVELENGTHS, HERO_PRISM_VERTICES, fanAngles, traceHeroBeam } from './heroBeam.js'
+import { BEAM_DIRECTION, HERO_PRISM_VERTICES, WEDGE_SAMPLES, spectrumRays, traceHeroBeam, wedgeWavelength, wedgeWeight } from './heroBeam.js'
 
 // Three.js scene of the hero: a glass prism, a white beam and a seven-color fan, with a light follow-the-pointer
 // motion. `createHeroScene` owns everything it allocates and releases it in `dispose()`.
@@ -81,6 +81,49 @@ function createGlassPrism() {
   return prism
 }
 
+/**
+ * A filled band of light: one triangle strip across `WEDGE_SAMPLES` colors. Near and far vertices of each color are
+ * updated every frame; the fragment shader fades the band along its length and softens its two edges, so the spectrum
+ * reads as one continuous beam instead of seven lines.
+ */
+function createWedge() {
+  const vertexCount = WEDGE_SAMPLES * 2
+  const positions = new Float32Array(vertexCount * 3), colors = new Float32Array(vertexCount * 3), alphas = new Float32Array(vertexCount), across = new Float32Array(vertexCount)
+  const index = []
+  for (let j = 0; j < WEDGE_SAMPLES; j++) {
+    const color = new THREE.Color(wavelengthToCss(wedgeWavelength(j))), weight = wedgeWeight(j)
+    for (let k = 0; k < 2; k++) { colors.set([color.r * weight, color.g * weight, color.b * weight], (j * 2 + k) * 3); across[j * 2 + k] = j / (WEDGE_SAMPLES - 1) }
+    if (j < WEDGE_SAMPLES - 1) index.push(j * 2, j * 2 + 1, j * 2 + 2, j * 2 + 2, j * 2 + 1, j * 2 + 3)
+  }
+  const geometry = new THREE.BufferGeometry()
+  geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3))
+  geometry.setAttribute('aColor', new THREE.BufferAttribute(colors, 3))
+  geometry.setAttribute('aAlpha', new THREE.BufferAttribute(alphas, 1))
+  geometry.setAttribute('aAcross', new THREE.BufferAttribute(across, 1))
+  geometry.setIndex(index)
+  const material = new THREE.ShaderMaterial({
+    transparent: true, depthWrite: false, depthTest: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide,
+    vertexShader: 'attribute vec3 aColor; attribute float aAlpha; attribute float aAcross; varying vec3 vColor; varying float vAlpha; varying float vAcross;\n'
+      + 'void main() { vColor = aColor; vAlpha = aAlpha; vAcross = aAcross; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
+    fragmentShader: 'varying vec3 vColor; varying float vAlpha; varying float vAcross;\n'
+      + 'void main() { float edge = smoothstep(0.0, 0.2, vAcross) * smoothstep(1.0, 0.8, vAcross); gl_FragColor = vec4(vColor, vAlpha * edge);\n'
+      + '#include <tonemapping_fragment>\n#include <colorspace_fragment>\n}',
+  })
+  const mesh = new THREE.Mesh(geometry, material)
+  mesh.frustumCulled = false
+  mesh.renderOrder = 2
+  /** `near[j]` and `far[j]` are [x, y] points; alpha goes linearly from `nearAlpha` to `farAlpha` along each color. */
+  const update = (near, far, nearAlpha, farAlpha) => {
+    for (let j = 0; j < WEDGE_SAMPLES; j++) {
+      positions.set([near[j][0], near[j][1], 0.01, far[j][0], far[j][1], 0.01], j * 6)
+      alphas[j * 2] = nearAlpha; alphas[j * 2 + 1] = farAlpha
+    }
+    geometry.attributes.position.needsUpdate = true
+    geometry.attributes.aAlpha.needsUpdate = true
+  }
+  return { mesh, update }
+}
+
 function createDust(count) {
   const positions = new Float32Array(count * 3)
   for (let i = 0; i < count; i++) { positions[i * 3] = (Math.random() - 0.5) * 18; positions[i * 3 + 1] = (Math.random() - 0.5) * 10; positions[i * 3 + 2] = (Math.random() - 0.5) * 6 }
@@ -121,7 +164,7 @@ export function createHeroScene({ host, reduceMotion }) {
   const prism = createGlassPrism()
   group.add(prism)
 
-  const streakOut = createStreakTexture('out'), streakIn = createStreakTexture('in'), glowTexture = createGlowTexture()
+  const streakIn = createStreakTexture('in'), glowTexture = createGlowTexture()
   const addStreak = (texture, color, opacity) => {
     const mesh = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), new THREE.MeshBasicMaterial({ map: texture, color, transparent: true, opacity, blending: THREE.AdditiveBlending, depthWrite: false, depthTest: false }))
     mesh.renderOrder = 2
@@ -138,7 +181,8 @@ export function createHeroScene({ host, reduceMotion }) {
   floorGlow.scale.set(6.2, 1.5, 1)
   floorGlow.position.set(0, -1.05, 0)
   const beamGlow = addStreak(streakIn, 0xffffff, 0.35), beam = addStreak(streakIn, 0xffffff, 1)
-  const fan = FAN_WAVELENGTHS.map((nm) => { const color = new THREE.Color(wavelengthToCss(nm)); return { inside: addStreak(streakOut, color, 0.5), core: addStreak(streakOut, color, 1), glow: addStreak(streakOut, color, 0.35) } })
+  const insideWedge = createWedge(), outsideWedge = createWedge(), glowWedge = createWedge()   // colors inside the glass (just starting to part) and after the exit face
+  group.add(insideWedge.mesh, outsideWedge.mesh, glowWedge.mesh)
   const dust = createDust(IS_LITE ? DUST_COUNT_LITE : DUST_COUNT)
   scene.add(dust)
 
@@ -193,14 +237,15 @@ export function createHeroScene({ host, reduceMotion }) {
     exitFlare.visible = Boolean(exit)
     if (exit) { exitFlare.position.set(exit.to[0], exit.to[1], 0.05); exitFlare.scale.setScalar(1.25 + Math.sin(time * 2.2) * 0.1) }
 
-    const angles = exit ? fanAngles(exit.direction) : []
-    fan.forEach(({ inside, core, glow }, i) => {
-      if (!exit) { inside.visible = core.visible = glow.visible = false; return }
-      const end = [exit.to[0] + Math.cos(angles[i]) * FAN_RAY_LENGTH, exit.to[1] + Math.sin(angles[i]) * FAN_RAY_LENGTH]
-      placeSegment(inside, exit.from, exit.to, 0.06)
-      placeSegment(core, exit.to, end, 0.11)
-      placeSegment(glow, exit.to, end, 0.22)
-    })
+    insideWedge.mesh.visible = outsideWedge.mesh.visible = glowWedge.mesh.visible = Boolean(exit)
+    if (exit) {
+      const rays = spectrumRays(exit, rotation)
+      insideWedge.update(rays.map(() => exit.from), rays.map((ray) => ray.start), 0.2, 0.7)
+      const reach = (list) => list.map((ray) => [ray.start[0] + Math.cos(ray.angle) * FAN_RAY_LENGTH, ray.start[1] + Math.sin(ray.angle) * FAN_RAY_LENGTH])
+      outsideWedge.update(rays.map((ray) => ray.start), reach(rays), 0.85, 0)
+      const halo = spectrumRays(exit, rotation, 1.45)   // a wider, faint copy: the soft bloom around the colors
+      glowWedge.update(halo.map((ray) => ray.start), reach(halo), 0.3, 0)
+    }
 
     driftDust(dust, time)
     group.position.set(wide ? 2.7 : 0.2, 0, 0)
@@ -237,7 +282,7 @@ export function createHeroScene({ host, reduceMotion }) {
       visibilityObserver.disconnect()
       removeEventListener('pointermove', onPointerMove)
       scene.traverse((object) => { object.geometry?.dispose?.(); object.material?.dispose?.() })
-      streakOut.dispose(); streakIn.dispose(); glowTexture.dispose(); environment.dispose(); renderer.dispose()
+      streakIn.dispose(); glowTexture.dispose(); environment.dispose(); renderer.dispose()
       renderer.domElement.remove()
     },
   }

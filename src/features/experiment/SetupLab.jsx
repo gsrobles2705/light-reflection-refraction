@@ -2,14 +2,14 @@ import { useId, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { Angle, Arrow, Caption } from '../../components/Diagram.jsx'
 import { Reveal } from '../../components/ui'
-import { SETUP_REASONS, SETUP_STATUS } from '../../content/experiment.js'
+import { SETUP_PRESETS, SETUP_REASONS, SETUP_STATUS } from '../../content/experiment.js'
 import { INDEX } from '../../domain/media.js'
 import { LASER_ANGLE, MILK_ML, WATER_LITERS, setupReadout } from '../../domain/setup.js'
 import { useSmoothed } from '../../hooks/useSmoothed.js'
 
 // Side view of the container (2 L) in a 560 × 426 canvas (the drawing is shifted down to leave room for the laser)
 const LEFT = 170, RIGHT = 430, BOTTOM = 350, RIM = 150, HEIGHT = BOTTOM - RIM
-const LASER = '#3dff7a'
+const LASER = '#ff3b3b'   // the group's laser pointer is red
 const comma = (value, digits = 1) => value.toFixed(digits).replace('.', ',')
 const toRadians = (degrees) => degrees*Math.PI/180
 
@@ -56,7 +56,7 @@ function SetupFigure({ volume, milk, angle, shown, onAngle }) {
   }
 
   return (
-    <svg ref={svgRef} className="slab-svg" viewBox="0 0 560 426" role="img" aria-label={`Láser verde sobre el agua con ${comma(volume, 2)} litros y ${comma(milk)} mililitros de leche: incide a ${angle} grados y se refracta a ${comma(refractedDegrees)} grados`}>
+    <svg ref={svgRef} className="slab-svg" viewBox="0 0 560 426" role="img" aria-label={`Láser rojo sobre el agua con ${comma(volume, 2)} litros y ${comma(milk)} mililitros de leche: incide a ${angle} grados y se refracta a ${comma(refractedDegrees)} grados`}>
       <defs>
         <filter id={id + 'blur'} x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="4.5" /></filter>
         <linearGradient id={id + 'beam'} gradientUnits="userSpaceOnUse" x1={pointX} y1={level} x2={refractedEnd[0]} y2={refractedEnd[1]}>
@@ -150,6 +150,14 @@ export default function SetupLab() {
           <Control id="sl-water" label="Agua" value={volume} display={`${comma(volume, 2)} L`} range={WATER_LITERS} onChange={setVolume} />
           <Control id="sl-milk" label="Leche" value={milk} display={`${comma(milk)} mL`} range={MILK_ML} onChange={setMilk} zone={MILK_ML.ideal} />
           <Control id="sl-angle" label="Ángulo del láser θ₁" value={angle} display={`${angle}°`} range={LASER_ANGLE} onChange={setAngle} />
+          <div className="slab-presets" role="group" aria-label="Ángulos listos">
+            {SETUP_PRESETS.map((preset) => (
+              <button key={preset.angle} type="button" className={'slab-preset' + (angle === preset.angle ? ' on' : '')} aria-pressed={angle === preset.angle} title={preset.hint} onClick={() => dragAngle(preset.angle)}>
+                <b>{preset.angle}°</b><span>{preset.label}</span>
+              </button>
+            ))}
+          </div>
+          <small className="slab-presethint">{SETUP_PRESETS.find((preset) => preset.angle === angle)?.hint ?? 'Prueba un ángulo listo o arrastra el láser.'}</small>
           <AnimatePresence mode="wait">
             <motion.p key={readout.state} role="status" className={'slab-status ' + status.tone} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>{status.text}</motion.p>
           </AnimatePresence>

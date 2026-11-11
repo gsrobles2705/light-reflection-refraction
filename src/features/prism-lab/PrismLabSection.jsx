@@ -61,7 +61,7 @@ export default function PrismLabSection() {
       <Reveal><div className="pctl">
         <PrismReadout settings={settings} selectedWavelength={selectedWavelength} trace={trace} recombines={recombines} />
         <PrismControls settings={settings} onChange={patch} onWavelength={(wavelength) => { patch({ wavelength }); setSelectedWavelength(wavelength) }} onReset={reset} />
-        <p className="note">El violeta se frena más en el vidrio que el rojo, por eso se desvía más y los colores se separan.</p>
+        <p className="note">El violeta se frena más en el vidrio que el rojo, por eso se desvía más y los colores se separan. El abanico se dibuja ampliado para distinguir los colores: el modelo de dispersión es simplificado y los valores son aproximados.</p>
       </div></Reveal>
     </div></section>
   )

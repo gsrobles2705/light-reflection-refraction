@@ -1,6 +1,5 @@
-import Icon from '../../components/Icon.jsx'
+import AppIcon from '../../components/AppIcon.jsx'
 import { Reveal, SectionHead } from '../../components/ui'
-import { ACCENT_HUES } from '../../config/palette.js'
 import { APPLICATIONS } from '../../content/applications.js'
 
 /** Grid of real-life applications of reflection and refraction. */
@@ -11,8 +10,8 @@ export default function ApplicationsSection() {
       <div className="apps">
         {APPLICATIONS.map((application, i) => (
           <Reveal key={application.title} delay={(i % 3) * 0.05} className="app-w">
-            <div className="app" style={{ '--c': ACCENT_HUES[i] }}>
-              <div className="ico"><Icon name={application.icon} size={28} /></div>
+            <div className="app" style={{ '--c': application.color }}>
+              <div className="ico"><AppIcon name={application.icon} size={62} /></div>
               <h3>{application.title}</h3><p>{application.text}</p>
             </div>
           </Reveal>

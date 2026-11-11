@@ -6,17 +6,17 @@ export const PRISM_STORY = [
   {
     title: 'La luz viaja recta',
     text: 'En el aire, un haz de luz va en línea recta. Todavía no hay prisma en su camino.',
-    settings: { prismHidden: true, whiteLight: false, wavelength: 550, dispersion: false, newtonPair: false, material: 1, apexAngle: 40, rotation: 13.7, laserY: 170, laserAngle: 0 },
+    settings: { prismHidden: true, whiteLight: false, wavelength: 550, dispersion: false, newtonPair: false, material: 1, apexAngle: 50, rotation: 6.25, laserY: 190, laserAngle: -8 },
   },
   {
     title: 'Entra al vidrio y se dobla',
     text: 'Al entrar al vidrio la luz frena y cambia de dirección. Al salir, se dobla otra vez. Es la refracción en las dos caras.',
-    settings: { prismHidden: false, whiteLight: false, wavelength: 550, dispersion: false, newtonPair: false, material: 1, apexAngle: 40, rotation: 'min', laserY: 170, laserAngle: 0 },
+    settings: { prismHidden: false, whiteLight: false, wavelength: 550, dispersion: false, newtonPair: false, material: 1, apexAngle: 50, rotation: 'min', laserY: 190, laserAngle: -8 },
   },
   {
     title: 'La luz blanca se abre en colores',
-    text: 'La luz blanca mezcla todos los colores. El vidrio frena más al violeta que al rojo, así que el violeta se desvía más.',
-    settings: { prismHidden: false, whiteLight: true, dispersion: true, newtonPair: false, material: 1, apexAngle: 40, laserY: 170, laserAngle: 0, rotation: 'min' },
+    text: 'La luz blanca mezcla todos los colores. El vidrio frena más al violeta que al rojo, así que el violeta se desvía más. Dentro del vidrio los colores apenas empiezan a separarse; al salir se abren mucho más.',
+    settings: { prismHidden: false, whiteLight: true, dispersion: true, newtonPair: false, material: 1, apexAngle: 50, laserY: 190, laserAngle: -8, rotation: 'min' },
   },
   {
     title: 'Así nace el arcoíris',

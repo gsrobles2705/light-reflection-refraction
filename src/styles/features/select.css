@@ -1,0 +1,18 @@
+/* Custom drop-down (components/ui/Select.jsx): a themed button plus a floating option list. */
+.sel{position:relative}
+.sel-btn{display:flex;align-items:center;gap:8px;width:100%;min-height:46px;padding:9px 10px 9px 12px;border-radius:12px;border:2px solid var(--bd);background:var(--surf);color:var(--ink);font:600 .95rem "Instrument Sans",system-ui,sans-serif;text-align:left;cursor:pointer;transition:border-color .2s,box-shadow .2s,background .2s}
+.sel-btn:hover{border-color:var(--at)}
+.sel.open .sel-btn,.sel-btn:focus-visible{border-color:var(--at);box-shadow:0 0 0 3px color-mix(in srgb,var(--at) 28%,transparent);outline:none}
+.sel-name{flex:1 0 auto;white-space:nowrap}
+.sel-detail{flex:0 1 auto;min-width:0;overflow:hidden;white-space:nowrap;padding:2px 7px;border-radius:99px;background:color-mix(in srgb,var(--at) 16%,transparent);color:var(--at);font:700 .74rem ui-monospace,Menlo,Consolas,monospace}
+.sel-chev{flex:none;color:var(--mute);transition:transform .2s var(--ease)}
+.sel.open .sel-chev{transform:rotate(180deg);color:var(--at)}
+.sel-list{position:absolute;z-index:60;left:0;right:0;top:calc(100% + 6px);margin:0;padding:6px;list-style:none;max-height:280px;overflow:auto;border-radius:14px;border:1.5px solid var(--bd);background:var(--surf);box-shadow:0 18px 40px -12px rgba(0,0,0,.55);animation:sel-in .16s var(--ease)}
+.sel.up .sel-list{top:auto;bottom:calc(100% + 6px)}
+.sel-list li{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:9px;color:var(--ink);font:600 .93rem "Instrument Sans",system-ui,sans-serif;cursor:pointer}
+.sel-list li[data-active="true"]{background:color-mix(in srgb,var(--at) 16%,transparent)}
+.sel-list li.on{color:var(--at)}
+.sel-tick{flex:none;color:var(--at);opacity:0}
+.sel-list li.on .sel-tick{opacity:1}
+@keyframes sel-in{from{opacity:0;transform:translateY(-4px) scale(.98)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.sel-list{animation:none}.sel-chev{transition:none}}

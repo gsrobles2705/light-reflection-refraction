@@ -1,5 +1,5 @@
 :root{--h-comparacion:#d4e157}
-#comparacion{--c:var(--h-comparacion)}
+#comparacion{--sec:var(--h-comparacion);--c:var(--at)}
 .cmp{display:grid;gap:10px;margin-top:28px}
 .cmp-row{display:grid;grid-template-columns:minmax(120px,.7fr) repeat(2,minmax(0,1.3fr));gap:10px;align-items:stretch}
 .cmp-th{padding:14px 20px;border-radius:16px;font:800 1.2rem "Bricolage Grotesque",system-ui,sans-serif;color:var(--ink);background:color-mix(in srgb,var(--c) 24%,transparent);border-bottom:4px solid var(--c)}

@@ -9,4 +9,8 @@ export const COURSE = {
   week: 'Semana 36',
   topic: 'Reflexión y Refracción',
   term: 'IV Bimestre',
+  year: 2026,
 }
+
+/** One-line course description (hero and footer): the term always comes before the week. */
+export const COURSE_LINE = `Proyecto de ${COURSE.subject} · ${COURSE.topic} · ${COURSE.classroom} · ${COURSE.term} · ${COURSE.week} · ${COURSE.year}`

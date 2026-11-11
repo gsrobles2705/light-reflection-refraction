@@ -1,7 +1,7 @@
 /* Virtual lab: protractor figure, grading panel and explanatory cards. */
 /* Virtual lab */
 .xh{margin:34px 0 14px;font-size:1.3rem}
-.vlab{margin:26px 0 8px;padding:22px;border-radius:24px;background:var(--surf);border:1px solid var(--line)}
+.vlab{margin:26px 0 8px;border-top:4px solid var(--at);padding:22px;border-radius:24px;background:var(--surf);border:1px solid var(--line)}
 .vcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-bottom:22px}
 .vcards>div{position:relative;padding:14px 16px 14px 62px;border-radius:16px;border:1px solid var(--line);background:color-mix(in srgb,var(--c) 7%,transparent)}
 .vcards b{position:absolute;left:14px;top:14px;display:grid;place-items:center;width:36px;height:36px;border-radius:12px;background:var(--c);color:#080a18;font:800 1.05rem "Bricolage Grotesque",system-ui,sans-serif}
@@ -14,11 +14,12 @@
 .vmode button{border:0;background:none;color:var(--mute);padding:7px 14px;border-radius:99px;font:600 .85rem "Instrument Sans",sans-serif;cursor:pointer;transition:background .2s,color .2s}
 .vmode button[aria-pressed=true]{background:var(--g1);color:var(--on)}
 .vscore{font:700 .85rem monospace;padding:6px 12px;border-radius:99px;background:color-mix(in srgb,var(--g1) 14%,transparent)}
+.vgrid>*{min-width:0}
 .vgrid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:22px;align-items:start}
-.vsvg{width:100%;border-radius:18px;background:#05060f;border:1px solid var(--line)}
+.vsvg{width:100%;border-radius:18px;background:#0e0d0b;border:1px solid var(--line)}
 .vt{fill:rgba(255,255,255,.65);font:600 11px sans-serif}
 .vt.big{font-size:12px;fill:rgba(255,255,255,.85)}
-.vctl{display:grid;gap:10px}
+.vctl{display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
 .vctl label{font-size:.9rem;color:var(--mute)}
 .vctl label b{color:var(--ink);float:right}
 .vin{display:flex;gap:10px}
@@ -29,7 +30,7 @@
 .vres.ok{background:color-mix(in srgb,#3fe3a0 16%,transparent);border:1px solid #3fe3a0}
 .vres.no{background:color-mix(in srgb,#ff9a4d 14%,transparent);border:1px solid #ff9a4d}
 @media (max-width:820px){
-  .vgrid{grid-template-columns:1fr}
+  .vgrid{grid-template-columns:minmax(0,1fr)}
 }
 td.good,.vt.dim{}
 .vt.dim{opacity:.5}

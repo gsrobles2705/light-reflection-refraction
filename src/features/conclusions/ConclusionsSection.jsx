@@ -7,7 +7,7 @@ import { CONCLUSIONS, CONCLUSIONS_KEY_IDEA } from '../../content/conclusions.js'
 export default function ConclusionsSection() {
   return (
     <section id="conclusiones" className="alt"><div className="wrap">
-      <SectionHead tag="Conclusiones" title="Lo que aprendimos" />
+      <SectionHead tag="Conclusiones" title="Lo que aprendimos" lead="Un repaso de todo el recorrido, en el mismo orden de la página: de la historia al experimento y los problemas." />
       <ol className="concl">
         {CONCLUSIONS.map((conclusion, i) => (
           <Reveal key={i} delay={i * 0.06} className="cc-w">
@@ -15,7 +15,7 @@ export default function ConclusionsSection() {
               <div className="cc-vis" aria-hidden={conclusion.diagram == null ? 'true' : undefined}>
                 {conclusion.diagram != null
                   ? <Diagram kind={conclusion.diagram} />
-                  : <div className="cc-ok"><strong>&lt; 5 %</strong><span>de error: medida y teoría coinciden</span></div>}
+                  : <div className="cc-ok"><strong>{conclusion.badge.value}</strong><span>{conclusion.badge.text}</span></div>}
               </div>
               <div className="cc-body">
                 <div className="cc-head"><span className="pn" aria-hidden="true">{i + 1}</span><h3>{conclusion.title}</h3></div>

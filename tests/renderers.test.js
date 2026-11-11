@@ -54,6 +54,6 @@ test('hero fallback renderer: dark and light themes, wide and narrow screens', (
     advancePointer(pointer)
     drawHeroFallback(recording.ctx, { width, height: 800 }, pointer, 1, dark)
     assert.ok(pointer.x < 0.62 && pointer.x > 0.3, 'the pointer eases toward its target')
-    assert.ok(count(recording.calls, 'stroke') >= 10)
+    assert.ok(count(recording.calls, 'stroke') >= 3 && count(recording.calls, 'fill') >= 20, 'prism lines plus a filled spectrum wedge')
   }
 })

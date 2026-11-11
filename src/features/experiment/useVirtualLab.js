@@ -47,17 +47,17 @@ export function useVirtualLab() {
       if (result || !measuredIndex) return
       const graded = gradeReading({ incidentDegrees: incident, reading, measuredIndex, material })
       finish(graded.correct, graded.correct
-        ? `¡Muy bien! El rayo marca ${graded.trueAngle.toFixed(1)}°. Con tu medida, n = ${measuredIndex.toFixed(3)} (el real es ${material.index}). Tu error: ${graded.errorPercent.toFixed(1)} %.`
-        : `Casi. El rayo marca ${graded.trueAngle.toFixed(1)}° y tú pusiste ${reading}°. Recuerda: mide desde la línea punteada vertical hasta el rayo dentro del material.`)
+        ? `¡Muy bien! El rayo marca ${graded.trueAngle.toFixed(1).replace('.', ',')}°. Con tu medida, n = ${measuredIndex.toFixed(3).replace('.', ',')} (el real es ${material.index}). Tu error: ${graded.errorPercent.toFixed(1).replace('.', ',')} %.`
+        : `Casi. El rayo marca ${graded.trueAngle.toFixed(1).replace('.', ',')}° y tú pusiste ${reading}°. Recuerda: mide desde la línea punteada vertical hasta el rayo dentro del material.`)
     },
     /** Mystery mode: the student names the material after computing n. */
     choose(chosen) {
       if (result) return
       const graded = gradeMysteryChoice({ incidentDegrees: incident, reading, measuredIndex, secret, chosen })
-      if (!graded.measurementIsClose) return finish(false, `Tu medida de θ₂ quedó lejos (n = ${measuredIndex.toFixed(3)}). Vuelve a leer el ángulo en el transportador y prueba de nuevo.`)
+      if (!graded.measurementIsClose) return finish(false, `Tu medida de θ₂ quedó lejos (n = ${measuredIndex.toFixed(3).replace('.', ',')}). Vuelve a leer el ángulo en el transportador y prueba de nuevo.`)
       finish(graded.correct, graded.correct
-        ? `¡Correcto! Era ${chosen.name} (n = ${chosen.index}). Tu n medido: ${measuredIndex.toFixed(3)}, con un error de ${graded.errorPercent.toFixed(1)} %.`
-        : `No era ${chosen.name}. Tu n = ${measuredIndex.toFixed(3)} y el material era ${secret.name} (n = ${secret.index}).`)
+        ? `¡Correcto! Era ${chosen.name} (n = ${chosen.index}). Tu n medido: ${measuredIndex.toFixed(3).replace('.', ',')}, con un error de ${graded.errorPercent.toFixed(1).replace('.', ',')} %.`
+        : `No era ${chosen.name}. Tu n = ${measuredIndex.toFixed(3).replace('.', ',')} y el material era ${secret.name} (n = ${secret.index}).`)
     },
     retry() {
       clearAttempt()

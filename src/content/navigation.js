@@ -10,7 +10,7 @@ export const NAV_ITEMS = [
   { id: 'prisma', label: 'Prisma' },
   { id: 'aplicaciones', label: 'Aplicaciones' },
   { id: 'experimento', label: 'Experimento' },
-  { id: 'simulador', label: 'Simulador' },
+  { id: 'simulador', label: 'Laboratorio libre' },
   { id: 'problemas', label: 'Problemas' },
   { id: 'conclusiones', label: 'Conclusiones' },
   { id: 'referencias', label: 'Referencias' },
@@ -18,3 +18,12 @@ export const NAV_ITEMS = [
 
 /** Navigation entries for the sections that are actually rendered (the team section is hidden when it is empty). */
 export const visibleNavItems = (hasTeam) => NAV_ITEMS.filter((item) => item.id !== 'integrantes' || hasTeam)
+
+/** The reading route in five stages (the map at the bottom of the page). Each stage groups consecutive sections by id. */
+export const ROUTE_STAGES = [
+  { id: 'conoce', label: 'Conoce', sections: ['historia', 'contenido', 'comparacion'] },
+  { id: 'explora', label: 'Explora', sections: ['prisma', 'aplicaciones'] },
+  { id: 'experimenta', label: 'Experimenta', sections: ['experimento', 'simulador'] },
+  { id: 'practica', label: 'Practica', sections: ['problemas'] },
+  { id: 'cierra', label: 'Cierra', sections: ['conclusiones', 'referencias'] },
+]

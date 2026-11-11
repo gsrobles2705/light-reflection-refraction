@@ -1,7 +1,7 @@
 import { INDEX } from './media.js'
 import { refractedAngleDegrees } from './optics.js'
 
-// The group's real setup: a 2 L transparent container, 1.8 to 2 L of water, 3 to 6 mL of milk and a green laser.
+// The group's real setup: a 2 L transparent container, 1.8 to 2 L of water, 3 to 6 mL of milk and a red laser.
 
 export const CONTAINER_LITERS = 2
 export const WATER_LITERS = { min: 1.8, max: 2, step: 0.05, initial: 1.9 }

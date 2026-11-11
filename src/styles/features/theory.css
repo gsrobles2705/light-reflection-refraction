@@ -21,7 +21,7 @@
 /* specular / diffuse */
 .tseg{display:inline-flex;padding:4px;border-radius:99px;background:var(--surf);border:1px solid var(--line);margin-bottom:10px}
 .tseg button{border:0;background:none;color:var(--mute);font:700 .88rem "Instrument Sans",sans-serif;padding:7px 18px;border-radius:99px;cursor:pointer;transition:background .3s,color .3s}
-.tseg button[aria-pressed="true"]{background:var(--c);color:#080a18}
+.tseg button[aria-pressed="true"]{background:var(--g1);color:var(--on)}
 .ttypes-svg{display:block;width:100%;height:auto;max-height:150px;border-radius:14px;background:color-mix(in srgb,var(--c) 6%,var(--bg))}
 .ttypes p{margin:10px 0 6px}.ttypes small,.tdaily small{display:block;color:var(--mute);font-size:.88rem;line-height:1.5}
 /* direction of the bent ray */

@@ -6,7 +6,7 @@ export const TOOLS = [
     id: 'montaje',
     name: 'Montaje del grupo',
     verb: 'Observar',
-    color: '#3dff7a',
+    color: '#ff4d4d',
     use: 'ver con tus propios ojos qué pasa en el recipiente real del grupo: el láser entra al agua, se dobla y una parte rebota. Cambia el agua, la leche y el ángulo para saber qué necesitas preparar.',
     not: 'medir ni calificarte. Aquí solo miras y entiendes el experimento antes de hacerlo.',
   },
@@ -20,7 +20,7 @@ export const TOOLS = [
   },
   {
     id: 'laboratorio',
-    name: 'Laboratorio de luz',
+    name: 'Laboratorio libre',
     verb: 'Explorar',
     color: '#a98bff',
     use: 'probar libremente cualquier ángulo, color de luz y material (aire, agua, vidrio, diamante) y descubrir cuándo la luz se dobla, rebota o queda atrapada dentro (reflexión total).',

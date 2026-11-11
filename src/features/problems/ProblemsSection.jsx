@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from 'motion/react'
 import { Reveal, SectionHead } from '../../components/ui'
 import { PROBLEMS } from '../../content/problems.js'
 import { PROBLEM_IMAGES } from './problemImages.js'
-import SnellFigure from '../../components/SnellFigure.jsx'
+import ProblemFigure from './ProblemFigure.jsx'
 
 const EASE = [0.23, 1, 0.32, 1]
 
@@ -80,11 +80,10 @@ export default function ProblemsSection() {
     if (stepped && visible > 0) list.current?.children[visible - 1]?.scrollIntoView({ block: 'nearest', behavior: 'smooth' })
   }, [visible, current, stepped])
 
-  const figureStep = problem.steps.findIndex((step) => step.figure), showFigure = figureStep >= 0 && visible > figureStep
   const items = [...problem.steps.map((step, i) => ({ step, i })), { answer: true, i: problem.steps.length }].slice(0, visible)
   return (
     <section id="problemas" ref={section} data-expo-steps="custom"><div className="wrap">
-      <SectionHead tag="Problemas resueltos" title="Practica y comprueba" lead="Tres problemas de refracción en prismas, resueltos paso a paso. Elige uno, mira el enunciado y sigue la solución." />
+      <SectionHead tag="Problemas resueltos" title="Practica y comprueba" lead="Tres problemas de refracción en prismas, resueltos paso a paso. Elige uno y mira cómo se dibuja la solución sobre la figura." />
       <Reveal>
         <div className="prb-tabs" role="tablist" aria-label="Problemas">
           {PROBLEMS.map((item, i) => (
@@ -99,17 +98,9 @@ export default function ProblemsSection() {
         <motion.div key={problem.id} className="prb-grid" initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.35, ease: EASE }}>
           <div className="prb-left">
             <figure className="prb-img">
-              <img src={PROBLEM_IMAGES[problem.id]} alt={problem.alt} loading="lazy" />
+              <ProblemFigure problem={problem} src={PROBLEM_IMAGES[problem.id]} visible={visible} />
               <figcaption>{problem.title}</figcaption>
             </figure>
-            <AnimatePresence>
-              {showFigure && (
-                <motion.figure key="diagram" className="prb-diagram" initial={{ opacity: 0, y: 24, scale: 0.94 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 12 }} transition={{ duration: 0.55, ease: EASE }}>
-                  <SnellFigure {...problem.steps[figureStep].figure} />
-                  <figcaption>Esquema del paso {figureStep + 1}: refracción en la interfaz</figcaption>
-                </motion.figure>
-              )}
-            </AnimatePresence>
           </div>
           <div className="prb-sol">
             <div className="prb-ctl">

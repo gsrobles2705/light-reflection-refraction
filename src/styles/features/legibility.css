@@ -1,0 +1,14 @@
+/* Legibility pass for projectors and phones: small texts grow a little and faded texts get more contrast.
+   Kept in one file, loaded after the feature styles, so the sizes can be tuned in a single place. */
+.dgl{font-size:14px}.dga,.dgv{font-size:15.5px}
+.hfig .dgl,.slab-svg .dgl{font-size:14px}
+.hfig .dga,.hfig .dgv{font-size:15.5px}
+.vt{font-size:12.5px;fill:rgba(255,255,255,.8)}.vt.big{font-size:14px;fill:#fff}.vt.dim{opacity:.7}
+.hs-nm{font-size:.9rem}
+.htopic{font-size:.76rem}
+.slab-read small,.vkeys,.tguide-row small,.tguide-step{font-size:.78rem}
+.slab-control small{font-size:.9rem}
+.slab-why p,.vcards p,.tguide p{font-size:.95rem}
+.tguide-row li{opacity:.78}
+.ref-by{font-size:.95rem}.ref-top{font-size:1rem}
+html:not([data-theme="dark"]) .tguide-row li:not(.on){color:var(--ink)}

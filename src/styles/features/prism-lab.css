@@ -1,6 +1,6 @@
 /* Prism lab: sticky canvas, scroll-driven story and controls. */
 :root{--h-prisma:#ff6bb5}
-#prisma{--c:var(--h-prisma)}
+#prisma{--sec:var(--h-prisma);--c:var(--at)}
 /* Prism */
 .pgrid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:26px;align-items:start}
 .pstick{position:sticky;top:84px;display:grid;gap:10px}

@@ -3,7 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="theme-color" content="#080a18" />
+    <meta name="theme-color" content="#12161c" />
+    <meta name="color-scheme" content="light dark" />
+    <script>
+      // Apply the system theme before the first paint so the page never flashes the wrong colors.
+      try {
+        var dark = matchMedia('(prefers-color-scheme: dark)').matches
+        document.documentElement.dataset.theme = dark ? 'dark' : 'light'
+        document.querySelector('meta[name="theme-color"]').setAttribute('content', dark ? '#12161c' : '#f4f6f8')
+      } catch (e) {}
+    </script>
     <meta
       name="description"
       content="Página interactiva sobre reflexión y refracción de la luz: historia, teoría, simulador de la ley de Snell, laboratorio del prisma, experimento y problemas resueltos. Física · 5to UNI."
@@ -30,11 +39,8 @@
       href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Instrument+Sans:wght@400..700&display=swap"
       rel="stylesheet"
     />
-    <title>Luz en Movimiento · Reflexión y Refracción · 5to UNI · Semana 36</title>
-    <link
-      rel="icon"
-      href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%278%27 fill=%27%23080a18%27/%3E%3Cpath d=%27M16 6 26 24H6Z%27 fill=%27none%27 stroke=%27white%27 stroke-width=%272%27 stroke-linejoin=%27round%27/%3E%3Cpath d=%27m21 20 7-2%27 stroke=%27%23ff6b6b%27 stroke-width=%272%27/%3E%3Cpath d=%27m21.5 22.5 6.5 1.5%27 stroke=%27%234de3ff%27 stroke-width=%272%27/%3E%3C/svg%3E"
-    />
+    <title>Luz en Movimiento · Reflexión y Refracción · 5to UNI · IV Bimestre · Semana 36</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   </head>
   <body>
     <div id="root"></div>

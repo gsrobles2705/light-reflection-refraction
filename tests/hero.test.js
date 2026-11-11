@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
-import { BEAM_DIRECTION, FAN_WAVELENGTHS, fanAngles, traceHeroBeam } from '../src/features/hero/heroBeam.js'
+import { BEAM_DIRECTION, FAN_WAVELENGTHS, WEDGE_SAMPLES, fanAngles, spectrumRays, traceHeroBeam } from '../src/features/hero/heroBeam.js'
 
 const clamp = (value, min, max) => Math.min(max, Math.max(min, value))
 
@@ -28,4 +28,16 @@ test('the fan has one direction per color, and violet bends the most (away from 
   const bendsDownward = Math.atan2(exit.direction[1], exit.direction[0]) < 0
   const bending = bendsDownward ? angles.map((angle) => -angle) : angles   // larger = bends more
   for (let i = 1; i < bending.length; i++) assert.ok(bending[i] > bending[i - 1], 'each color (red → violet) must bend more than the previous one')
+})
+
+test('the spectrum wedge has no gaps: the colors start together on the exit face and only then spread out', () => {
+  const rotation = 0.06, { exit } = traceHeroBeam(rotation, -0.1), rays = spectrumRays(exit, rotation)
+  assert.equal(rays.length, WEDGE_SAMPLES)
+  const gap = (a, b) => Math.hypot(a[0] - b[0], a[1] - b[1])
+  const first = rays[0], last = rays[rays.length - 1]
+  const near = gap(first.start, last.start)
+  assert.ok(near < 0.35, `colors must leave the face close together (spread ${near.toFixed(2)})`)
+  const farPoint = (ray, distance) => [ray.start[0] + Math.cos(ray.angle) * distance, ray.start[1] + Math.sin(ray.angle) * distance]
+  assert.ok(gap(farPoint(first, 8), farPoint(last, 8)) > near * 5, 'the band must widen with distance')
+  for (let i = 1; i < rays.length; i++) assert.ok(Math.abs(rays[i].angle - rays[i - 1].angle) < 0.02, 'neighbouring colors differ by a tiny angle')
 })

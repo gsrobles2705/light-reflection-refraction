@@ -19,12 +19,16 @@
 @import './features/virtual-lab.css';
 @import './features/simulator.css';
 @import './features/tool-guide.css';
+@import './features/select.css';
 @import './features/conclusions.css';
 @import './features/footer.css';
 @import './features/references.css';
 @import './features/problems.css';
 @import './features/theory.css';
 @import './features/comparison.css';
+@import './features/section-flow.css';
+@import './features/legibility.css';
+@import './features/route-map.css';
 @import './features/touch.css';
 @import './features/present.css';
 @import './features/perf.css';

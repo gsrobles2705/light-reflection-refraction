@@ -27,7 +27,7 @@ export const SNELL_EXAMPLE = {
     { text: 'Despejamos sen θ₂.', math: `sen θ₂ = ${comma(exampleSine, 3)}` },
     { text: 'Con la calculadora (arcoseno):', math: `θ₂ ≈ ${Math.round(Math.asin(exampleSine)*180/Math.PI)}°` },
   ],
-  conclusion: 'El rayo se acercó a la normal (30° → 22°), como se esperaba al pasar a un medio más denso.',
+  conclusion: 'El rayo se acercó a la normal (30° → 22°), como se esperaba al pasar a un medio de mayor n.',
 }
 
 export const THEORY_TOPICS = [
@@ -58,7 +58,7 @@ export const THEORY_TOPICS = [
     label: 'Refracción',
     color: '#4de3ff',
     cards: [
-      { title: '¿Qué es?', text: 'Es el cambio de dirección de la luz cuando pasa de un medio a otro de distinta densidad, porque cambia su velocidad.' },
+      { title: '¿Qué es?', text: 'Es el cambio de dirección de la luz cuando pasa de un medio a otro con distinto índice de refracción (n), porque cambia su velocidad.' },
       { kind: 'direction', title: 'Idea clave' },
       {
         kind: 'indices',

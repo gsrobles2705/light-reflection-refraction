@@ -11,8 +11,7 @@ import Hero from './features/hero/Hero.jsx'
 import HistorySection from './features/history/HistorySection.jsx'
 import Footer from './features/layout/Footer.jsx'
 import Header from './features/layout/Header.jsx'
-import ScrollProgress from './features/layout/ScrollProgress.jsx'
-import ThemeToggle from './features/layout/ThemeToggle.jsx'
+import RouteMap from './features/layout/RouteMap.jsx'
 import PresentBar from './features/present/PresentBar.jsx'
 import PrismLabSection from './features/prism-lab/PrismLabSection.jsx'
 import ProblemsSection from './features/problems/ProblemsSection.jsx'
@@ -34,11 +33,10 @@ export default function App() {
   return (
     <>
       <a className="skip" href="#contenido">Saltar al contenido</a>
-      <ScrollProgress />
       <PointerGlow />
-      <Header items={navItems} />
+      <Header items={navItems} theme={theme} onToggleTheme={toggleTheme} />
+      <RouteMap items={navItems} />
       <PresentBar />
-      <ThemeToggle theme={theme} onToggle={toggleTheme} />
 
       <main>
         <Hero theme={theme} />

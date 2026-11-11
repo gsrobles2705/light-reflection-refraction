@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { AnimatePresence, motion } from 'motion/react'
 import Icon from '../../components/Icon.jsx'
 import { useFullscreen } from './useFullscreen.js'
 import { useIdleTimeout } from './useIdleTimeout.js'
@@ -7,7 +8,18 @@ import { usePresentationSlides } from './usePresentationSlides.js'
 import { usePresentationTimer } from './usePresentationTimer.js'
 
 /** Clicks on these never advance the slide. */
-const NO_ADVANCE = 'a,button,input,select,textarea,label,summary,canvas,video,[role=tab],[role=slider],[role=switch],[contenteditable],.noadvance'
+const NO_ADVANCE = 'a,button,input,select,textarea,label,summary,canvas:not(.hero-cv),video,[role=tab],[role=slider],[role=switch],[role=combobox],[role=option],[contenteditable],.noadvance'
+
+/** A press that moves more than this (px) is a drag, not a click; two clicks closer than this (ms) count as one. */
+const CLICK_DRAG_TOLERANCE = 6
+const DOUBLE_CLICK_GUARD = 280
+const HINT_MS = 6000
+/** After clicking one of these the focus is released, so Space / Enter move the slide instead of pressing the same control again. */
+const CONTROLS_THAT_RELEASE_FOCUS = 'button,a,summary,label,[role=tab],[role=option]'
+
+/** A swipe must travel this far (px) and be mostly horizontal; it is ignored on elements that handle horizontal gestures themselves. */
+const SWIPE_DISTANCE = 70
+const SWIPE_BLOCKED = 'canvas,input,select,textarea,[role=slider],[role=listbox],[role=tab],[role=tablist],.noswipe,#expobar'
 
 /** Collapsed launcher: one round button that opens a small menu with the two presentation options. */
 function LaunchMenu({ open, onToggle, fullscreen, onFullscreen, onPresent }) {
@@ -15,13 +27,17 @@ function LaunchMenu({ open, onToggle, fullscreen, onFullscreen, onPresent }) {
     <div className="exlaunch">
       <button type="button" className="exfab" aria-haspopup="true" aria-expanded={open} aria-controls="exmenu" aria-label="Opciones de presentación" title="Presentar" onClick={onToggle}>
         <Icon name={open ? 'close' : 'screen'} size={20} />
+        <span className="exfab-txt" aria-hidden="true">Exponer <kbd>P</kbd></span>
       </button>
-      {open && (
-        <div id="exmenu" className="exmenu" role="group" aria-label="Opciones de presentación">
-          {fullscreen.supported && <button type="button" onClick={onFullscreen} aria-pressed={fullscreen.isFullscreen}><Icon name="expand" size={18} />{fullscreen.isFullscreen ? 'Salir de pantalla completa' : 'Pantalla completa'} <kbd>F</kbd></button>}
-          <button type="button" onClick={onPresent}><Icon name="screen" size={18} />Modo exposición <kbd>P</kbd></button>
-        </div>
-      )}
+      <AnimatePresence>
+        {open && (
+          <motion.div id="exmenu" className="exmenu" role="group" aria-label="Opciones de presentación"
+            initial={{ opacity: 0, y: 10, scale: 0.94 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 8, scale: 0.96 }} transition={{ duration: 0.2, ease: [0.23, 1, 0.32, 1] }}>
+            {fullscreen.supported && <button type="button" onClick={onFullscreen} aria-pressed={fullscreen.isFullscreen}><Icon name="expand" size={18} />{fullscreen.isFullscreen ? 'Salir de pantalla completa' : 'Pantalla completa'} <kbd>F</kbd></button>}
+            <button type="button" onClick={onPresent}><Icon name="screen" size={18} />Modo exposición <kbd>P</kbd></button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }
@@ -70,17 +86,54 @@ export default function PresentBar() {
     },
   })
 
-  // While presenting, a click on empty space of the slide shows its next part (controls keep their own behavior)
+  // While presenting, a click (or tap) on empty space shows the next part of the slide, exactly like Space. Controls keep their own
+  // behavior, a drag is not a click, double clicks do not skip a part, and a pressed control gives the keyboard back to the slide.
   useEffect(() => {
     if (!slides.presenting) return
+    let down = null, lastAdvance = 0
+    const onPointerDown = (event) => { down = { x: event.clientX, y: event.clientY } }
     const onClick = (event) => {
-      const target = event.target
-      if (event.button !== 0 || !target.closest?.('main>section.expo-cur') || target.closest?.(NO_ADVANCE) || getSelection()?.toString()) return
-      slides.step(1, { fromClick: true })
+      const target = event.target, section = target.closest?.('main>section.expo-cur')
+      const dragged = down && Math.hypot(event.clientX - down.x, event.clientY - down.y) > CLICK_DRAG_TOLERANCE
+      down = null
+      if (target.closest?.(CONTROLS_THAT_RELEASE_FOCUS) && !target.closest?.('#expobar')) setTimeout(() => document.activeElement?.blur?.(), 0)
+      if (event.button !== 0 || !section || dragged || target.closest?.(NO_ADVANCE) || getSelection()?.toString()) return
+      if (event.timeStamp - lastAdvance < DOUBLE_CLICK_GUARD) return
+      lastAdvance = event.timeStamp
+      // Interactive slides only leave on a click in truly empty space, so a click while using a tool never skips the slide
+      const emptySpace = target === section || target.classList.contains('wrap') || target.classList.contains('head')
+      slides.step(1, { fromClick: !emptySpace })
     }
-    document.addEventListener('click', onClick)
-    return () => document.removeEventListener('click', onClick)
+    document.addEventListener('pointerdown', onPointerDown, true); document.addEventListener('click', onClick)
+    return () => { document.removeEventListener('pointerdown', onPointerDown, true); document.removeEventListener('click', onClick) }
   }, [slides.presenting])
+
+  // A short reminder of how to move on, shown when the presentation starts
+  const [hint, setHint] = useState(false)
+  useEffect(() => {
+    if (!slides.presenting) { setHint(false); return }
+    setHint(true)
+    const timeout = setTimeout(() => setHint(false), HINT_MS)
+    return () => clearTimeout(timeout)
+  }, [slides.presenting])
+
+  // Touch screens: a horizontal swipe on the slide changes slide (swipes on canvases, sliders and scrollable strips keep their own meaning)
+  useEffect(() => {
+    if (!slides.presenting) return
+    let start = null
+    const onTouchStart = (event) => {
+      const touch = event.touches[0]
+      start = event.touches.length === 1 && !event.target.closest?.(SWIPE_BLOCKED) ? { x: touch.clientX, y: touch.clientY, time: Date.now() } : null
+    }
+    const onTouchEnd = (event) => {
+      if (!start) return
+      const touch = event.changedTouches[0], dx = touch.clientX - start.x, dy = touch.clientY - start.y, quick = Date.now() - start.time < 700
+      start = null
+      if (quick && Math.abs(dx) > SWIPE_DISTANCE && Math.abs(dx) > Math.abs(dy)*1.6 && !getSelection()?.toString()) slides.goTo(slides.slide + (dx < 0 ? 1 : -1))
+    }
+    document.addEventListener('touchstart', onTouchStart, { passive: true }); document.addEventListener('touchend', onTouchEnd, { passive: true })
+    return () => { document.removeEventListener('touchstart', onTouchStart); document.removeEventListener('touchend', onTouchEnd) }
+  }, [slides.presenting, slides.slide])
 
   // Clicking anywhere outside the toolbar closes the launcher menu
   useEffect(() => {
@@ -92,10 +145,13 @@ export default function PresentBar() {
 
   const hidden = idle && (slides.presenting || fullscreen.isFullscreen)
   return (
+    <>
     <div id="expobar" className={(slides.presenting ? 'expo ' : '') + (hidden ? 'idle' : '')} role="toolbar" aria-label="Herramientas de exposición">
       {slides.presenting
         ? <PresentationControls slides={slides} timer={timer} onLeave={leavePresentation} />
         : <LaunchMenu open={menuOpen} onToggle={() => setMenuOpen((open) => !open)} fullscreen={fullscreen} onFullscreen={() => { setMenuOpen(false); fullscreen.toggle() }} onPresent={togglePresentation} />}
     </div>
+    {hint && <p className="exhint" role="status"><b>Clic o Espacio</b> para avanzar · <b>←</b> <b>→</b> para cambiar de diapositiva · <b>Esc</b> para salir</p>}
+    </>
   )
 }

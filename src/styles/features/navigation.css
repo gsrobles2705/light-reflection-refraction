@@ -1,12 +1,43 @@
-/* Header navigation: compact color-dot menu on desktop. */
-@media (min-width:1241px){
-  .links{gap:0}
-  .links a{padding:8px 9px}
-  .links a::before{margin-right:0;width:8px;height:8px;opacity:.8;transition:opacity 160ms,transform 220ms cubic-bezier(.23,1,.32,1)}
-  .links a .lbl{display:inline-block;max-width:0;opacity:0;overflow:hidden;white-space:nowrap;margin-left:0;transition:max-width .38s cubic-bezier(.23,1,.32,1),opacity .25s,margin-left .38s cubic-bezier(.23,1,.32,1)}
-  .links a.on .lbl,.links a:hover .lbl,.links a:focus-visible .lbl{max-width:9em;opacity:1;margin-left:7px}
-  .links a:hover::before{transform:scale(1.5);opacity:1}
+/* Header: brand, the five route stages as plain text (desktop), theme toggle and a "Secciones" button with the grouped panel. */
+.stages{display:none;list-style:none;margin:0;padding:0;gap:4px}
+@media (min-width:900px){.stages{display:flex}}
+.stages a{position:relative;display:inline-flex;align-items:center;height:60px;padding:0 14px;color:var(--mute);font:600 .95rem "Instrument Sans",system-ui,sans-serif;text-decoration:none;white-space:nowrap;transition:color 160ms var(--ease)}
+.stages a:hover,.stages a.on{color:var(--ink)}
+.stages .uline{position:absolute;left:14px;right:14px;bottom:10px;height:2px;border-radius:2px;background:var(--a)}
+
+.navtools{flex:1 1 0;display:flex;align-items:center;justify-content:flex-end;gap:8px}
+nav #th{position:static;display:grid;place-items:center;width:44px;height:44px;padding:0;border-radius:50%;border:1px solid var(--bd);background:transparent;color:var(--ink);box-shadow:none;cursor:pointer}
+nav .sbtn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:0 16px;border:1px solid var(--bd);border-radius:10px;background:transparent;color:var(--ink);font:600 .92rem "Instrument Sans",system-ui,sans-serif;cursor:pointer}
+@media (max-width:899px){
+  nav .links{max-height:calc(100dvh - 160px)}   /* leave room for the bottom route bar */
+  nav .sbtn{width:44px;padding:0;border-radius:50%}
+  .sbtn-l{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 }
-@media (max-width:1240px){
-  .links{max-height:calc(100dvh - 96px);overflow-y:auto;overscroll-behavior:contain}
-}
+@media (max-width:380px){.brand{font-size:1rem;gap:8px}.navin{gap:6px}}
+@media (hover:hover) and (pointer:fine){nav .sbtn:hover,nav #th:hover{border-color:var(--at)}}
+nav .sbtn:focus-visible,nav #th:focus-visible{outline:2px solid var(--at);outline-offset:2px}
+
+/* Menu panel (all breakpoints): inicio, then one group per stage with its sections as chips, then the team */
+nav .links{display:none;position:absolute;top:calc(100% + 4px);left:auto;right:20px;width:min(460px,calc(100% - 40px));max-height:calc(100dvh - 88px);overflow-y:auto;overscroll-behavior:contain;padding:10px 12px 12px;background:var(--surf);border:1px solid var(--line);border-radius:22px;box-shadow:0 24px 60px -24px rgba(0,0,0,.45)}
+nav .links.open{display:grid;gap:0}
+nav .links a{display:flex;align-items:center;min-height:44px;padding:0 12px;border-radius:14px;color:var(--ink);font-size:1rem;white-space:normal}
+nav .links .mhome{font-weight:700}
+nav .links a[aria-current]{color:var(--ink)}
+.mgroup{display:grid;gap:4px;padding:8px 0 10px;border-top:1px solid var(--line)}
+nav .links .mstage{gap:10px;padding:0 4px;font:700 1rem "Bricolage Grotesque",system-ui,sans-serif}
+.mstage i{display:grid;place-items:center;flex:none;width:22px;height:22px;border-radius:50%;border:1.5px solid var(--bd);font:700 .75rem "Instrument Sans",system-ui,sans-serif;font-style:normal}
+.mgroup ul{display:flex;flex-wrap:wrap;gap:6px;list-style:none;margin:0;padding:0 0 0 36px}
+nav .links .mgroup li a{min-height:44px;padding:0 14px;border:1px solid var(--line);border-radius:99px;color:var(--mute);font-size:.95rem}
+nav .links .mgroup li a[aria-current]{color:var(--ink);border-color:var(--at);background:color-mix(in srgb,var(--at) 14%,transparent)}
+@media (hover:hover) and (pointer:fine){nav .links .mgroup li a:hover{border-color:var(--at);color:var(--ink)}}
+nav .links a:focus-visible,.stages a:focus-visible{outline:2px solid var(--at);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){.stages a,.stages i{transition:none}}
+
+/* The sections panel is always in the DOM and fades/slides in and out (hidden panels are not focusable: visibility) */
+nav .links{display:grid;gap:0;visibility:hidden;opacity:0;transform:translateY(-10px) scale(.97);transform-origin:top right;pointer-events:none;transition:opacity .2s var(--ease),transform .28s var(--ease),visibility 0s linear .28s}
+nav .links.open{visibility:visible;opacity:1;transform:none;pointer-events:auto;transition-delay:0s}
+nav .links.open .mhome,nav .links.open .mgroup{animation:menuitem .4s var(--ease) both}
+nav .links.open .mgroup:nth-of-type(1){animation-delay:40ms}nav .links.open .mgroup:nth-of-type(2){animation-delay:80ms}nav .links.open .mgroup:nth-of-type(3){animation-delay:120ms}nav .links.open .mgroup:nth-of-type(4){animation-delay:160ms}nav .links.open .mgroup:nth-of-type(5){animation-delay:200ms}
+@keyframes menuitem{from{opacity:0;transform:translateY(-6px)}}
+nav .sbtn svg{transition:transform .3s var(--ease)}nav .sbtn[aria-expanded=true] svg{transform:rotate(90deg)}
+@media (prefers-reduced-motion:reduce){nav .links,nav .links.open{transition:none}nav .links.open .mhome,nav .links.open .mgroup{animation:none}}

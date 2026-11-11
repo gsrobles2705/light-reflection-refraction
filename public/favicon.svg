@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" >
+  <defs>
+    <linearGradient id="w" gradientUnits="userSpaceOnUse" x1="12" y1="34" x2="45" y2="34"><stop offset="0" stop-color="#ff4d5e"/><stop offset=".17" stop-color="#ff9a3d"/><stop offset=".33" stop-color="#ffe14d"/><stop offset=".5" stop-color="#5fe08a"/><stop offset=".67" stop-color="#3fd5e6"/><stop offset=".83" stop-color="#4d7dff"/><stop offset="1" stop-color="#a56bff"/></linearGradient>
+    <style>
+      /* Browser tabs can be light or dark independently of the page, so the favicon uses one mid-tone ink that reads on both. */
+      .ink{stroke:#8593b0} .dot{fill:#fff}
+    </style>
+  </defs>
+  <path class="ink" d="M11 5V33" fill="none" stroke-width="5.4" stroke-linecap="round"/>
+  <path d="M11 35C17 22 22 22 27.5 35S39 48 45 33" fill="none" stroke="url(#w)" stroke-width="5.4" stroke-linecap="round"/>
+  <circle class="ink dot" cx="11" cy="35" r="2.4" stroke-width="1.6"/>
+</svg>

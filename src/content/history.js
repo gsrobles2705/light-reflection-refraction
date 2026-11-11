@@ -160,7 +160,7 @@ export const HISTORY = [
     place: 'Países Bajos',
     title: 'la luz como onda',
     color: '#ff8bd0',
-    text: 'Propone la teoría ondulatoria de la luz: explica geométricamente por qué se produce la refracción y cómo la velocidad de las ondas varía según la densidad del medio.',
+    text: 'Propone la teoría ondulatoria de la luz: explica geométricamente por qué se produce la refracción y cómo la velocidad de las ondas varía según el medio.',
     why: 'Sienta las bases de la óptica moderna y explica por qué la luz frena al entrar en el vidrio o el agua.',
   },
 ]

@@ -1,5 +1,5 @@
 import Icon from '../../components/Icon.jsx'
-import { Toggle } from '../../components/ui'
+import { Select, Toggle } from '../../components/ui'
 import { MEDIA } from '../../domain/media.js'
 import { colorNameForWavelength, wavelengthToCss } from '../../domain/spectrum.js'
 import { SCENARIOS } from './scenarios.js'
@@ -9,9 +9,7 @@ const QUICK_ANGLES = [0, 30, 45, 60, 75]
 const MediumSelect = ({ id, label, value, onChange }) => (
   <div>
     <label htmlFor={id}>{label}</label>
-    <select id={id} value={value} onChange={(event) => onChange(+event.target.value)}>
-      {MEDIA.map((medium, i) => <option key={medium.id} value={i}>{medium.name} (n = {medium.index})</option>)}
-    </select>
+    <Select id={id} value={value} onChange={onChange} options={MEDIA.map((medium, i) => ({ value: i, label: medium.name, detail: 'n = ' + String(medium.index).replace('.', ',') }))} />
   </div>
 )
 
@@ -20,7 +18,7 @@ const MediumSelect = ({ id, label, value, onChange }) => (
  * `onUserChange(patch)` applies a manual change (clearing the active preset); `onPatch(patch)` changes without clearing it.
  */
 export default function ControlPanel({ scene, activeScenario, playing, onScenario, onUserChange, onPatch, onAngleChange, onTogglePlay, onReset }) {
-  const degrees = scene.incidentAngle.toFixed(1)
+  const degrees = scene.incidentAngle.toFixed(1).replace('.', ',')
   return (
     <aside className="simR" aria-label="Controles del simulador">
       <h3 className="ch"><i>1</i>Elige un caso</h3>
@@ -49,7 +47,7 @@ export default function ControlPanel({ scene, activeScenario, playing, onScenari
         <button type="button" className="swap" onClick={() => onUserChange({ firstMedium: scene.secondMedium, secondMedium: scene.firstMedium })} aria-label="Intercambiar los dos materiales" title="Intercambiar"><Icon name="swap" size={20} /></button>
         <MediumSelect id="m2" label={scene.mode === 'slab' ? 'Material de la placa' : 'La luz entra a'} value={scene.secondMedium} onChange={(secondMedium) => onUserChange({ secondMedium })} />
       </div>
-      <p className="note">«n» mide cuánto frena el material a la luz: a mayor n, más se dobla el rayo.</p>
+      <p className="note">«n» mide cuánto frena el material a la luz. Al pasar a un n mayor el rayo se acerca a la normal; a un n menor, se aleja (y puede haber reflexión total).</p>
 
       <div className="act">
         <button type="button" className="btn sm" onClick={onTogglePlay}><Icon name={playing ? 'pause' : 'play'} size={16} />{playing ? 'Detener' : 'Animar el ángulo'}</button>

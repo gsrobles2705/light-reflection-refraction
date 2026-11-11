@@ -26,7 +26,7 @@
 }
 /* Compact menu: color dots; the active section (or the hovered one) shows its name */
 :root{--h-historia:#5ee0c8}
-#historia{--c:var(--h-historia)}
+#historia{--sec:var(--h-historia);--c:var(--at)}
 /* History on mobile: vertical timeline that reveals itself while scrolling */
 .hvert{display:none;list-style:none;margin:26px 0 0;padding:0}
 @media (max-width:800px){
@@ -54,7 +54,7 @@
 .hlanes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:26px}
 .hlane{position:relative;display:grid;gap:8px;align-content:start;text-align:left;padding:18px 20px;border-radius:20px;background:var(--surf);border:1px solid var(--line);border-top:4px solid var(--c);color:var(--mute);font:inherit;cursor:pointer;transition:transform .25s cubic-bezier(.23,1,.32,1),border-color .25s,box-shadow .25s}
 .hlane:hover{transform:translateY(-3px)}
-.hlane.on{border-color:color-mix(in srgb,var(--c) 55%,var(--line));box-shadow:0 10px 24px -20px var(--c);background:color-mix(in srgb,var(--c) 5%,var(--surf));color:var(--ink)}
+.hlane.on{border-color:var(--at);box-shadow:0 0 0 2px var(--at);background:color-mix(in srgb,var(--at) 8%,var(--surf));color:var(--ink)}
 .hlane-tag{display:flex;justify-content:space-between;align-items:center;font:700 .74rem "Instrument Sans",sans-serif;text-transform:uppercase;letter-spacing:.08em;color:var(--c)}
 .hlane-tag b{padding:2px 10px;border-radius:99px;background:color-mix(in srgb,var(--c) 18%,transparent);color:var(--ink);letter-spacing:.02em;text-transform:none}
 .hlane strong{font:800 1.35rem/1.15 "Bricolage Grotesque",system-ui,sans-serif;letter-spacing:-.02em;color:var(--ink)}
@@ -116,10 +116,8 @@
 .hs-yr{align-self:end;font:700 1rem "Bricolage Grotesque",system-ui,sans-serif;color:var(--ink);white-space:nowrap}
 .hs-nm{align-self:start;font-size:.82rem;line-height:1.35;padding-right:6px}
 .hs-item:hover .hs-dot{transform:scale(1.25)}
-.hs-item.on .hs-dot{background:var(--c);transform:scale(1.35)}
+.hs-item.on .hs-dot{background:var(--c);transform:scale(1.35);box-shadow:0 0 0 5px color-mix(in srgb,var(--c) 25%,transparent)}
 .hs-item.on .hs-nm{color:var(--ink)}
-.hs-mark{position:absolute;left:11px;top:50%;width:38px;height:38px;margin-top:-19px;border-radius:50%;border:2px solid var(--c);pointer-events:none;animation:hsring 2.2s ease-out infinite}
-@keyframes hsring{0%{transform:scale(.7);opacity:.9}100%{transform:scale(1.5);opacity:0}}
 .hs-card{position:relative;padding:clamp(26px,3.6vh,46px) clamp(28px,3vw,46px);border-radius:26px;background:var(--surf);border:1px solid var(--line);border-left:5px solid var(--c);box-shadow:0 24px 60px -40px var(--c)}
 .hs-head{display:flex;align-items:flex-end;gap:22px;flex-wrap:wrap;margin-bottom:18px}
 .hs-big{font:800 clamp(2.8rem,8vh,5.2rem)/1 "Bricolage Grotesque",system-ui,sans-serif;letter-spacing:-.04em;color:var(--c)}
@@ -131,14 +129,10 @@
 .hs-fig figcaption{margin-top:10px;font-size:clamp(.85rem,1.5vh,1.05rem);line-height:1.45;text-align:center;color:var(--mute)}
 .hs-foot{position:absolute;left:236px;right:0;bottom:-6px;display:flex;justify-content:space-between;align-items:center;font-size:.85rem;color:var(--mute);pointer-events:none}
 .hs-count b{color:var(--ink);font-size:1rem}
-.hs-hint{display:inline-flex;align-items:center;gap:12px;padding:9px 18px 9px 14px;border-radius:99px;background:var(--surf);border:1px solid var(--line);color:var(--ink);font-size:.95rem;line-height:1.3;box-shadow:0 10px 26px -20px var(--c);pointer-events:none}
+.hs-hint{display:none;align-items:center;gap:12px;padding:9px 18px;border-radius:99px;background:var(--surf);border:1px solid var(--line);color:var(--ink);font-size:.95rem;line-height:1.3;box-shadow:0 10px 26px -20px var(--c);pointer-events:none}
 .hs-hint b{color:var(--ink)}.hs-hint em{font-style:normal;color:var(--mute)}
-.hs-mouse{position:relative;flex:0 0 auto;width:18px;height:28px;border-radius:10px;border:2px solid var(--c)}
-.hs-mouse b{position:absolute;left:50%;top:5px;width:4px;height:7px;margin-left:-2px;border-radius:3px;background:var(--c);animation:hswheel 1.5s ease-in-out infinite}
-@keyframes hswheel{0%{transform:translateY(0);opacity:1}70%{transform:translateY(8px);opacity:0}100%{opacity:0}}
-.only-expo{display:none}
-html.expo .only-expo{display:inline}html.expo .only-scroll{display:none}
-html.expo .hs-mouse{display:none}
+/* The "next" hint only exists in presentation mode (click / Space); while scrolling the page it is hidden */
+html.expo .hs-hint{display:inline-flex}
 /* Figures (built from the theory diagram toolkit) */
 #historia .wrap{max-width:1380px}
 .hs-fig .hfig{max-height:calc(var(--hs-h) - 300px);margin:0 auto}
@@ -153,7 +147,7 @@ html.expo .hs-mouse{display:none}
 }
 @media (max-width:800px){.hscroll{display:none}}
 @media (prefers-reduced-motion:reduce){
-  .hs-track,.hs-mark,.hs-mouse b,.fg-flow,.fg-dot,.fg-wavelet,.fg-lens,.fg-obj,.hfull-btn i{animation:none!important;transition:none!important}
+  .hs-track,.fg-flow,.fg-dot,.fg-wavelet,.fg-lens,.fg-obj,.hfull-btn i{animation:none!important;transition:none!important}
   .fg-draw{animation:none;stroke-dashoffset:0}
 }
 

@@ -1,4 +1,5 @@
 import Icon from '../../components/Icon.jsx'
+import { Select } from '../../components/ui'
 import { PRISM_MATERIALS } from '../../domain/media.js'
 import { wavelengthToCss } from '../../domain/spectrum.js'
 import { SPECTRUM_CHIPS } from '../../content/prismLab.js'
@@ -9,9 +10,9 @@ export function PrismReadout({ settings, selectedWavelength, trace, recombines }
   return (
     <div className="pinfo" role="status" aria-live="polite">
       <strong style={{ color: wavelengthToCss(selectedWavelength) }}>{label} · {selectedWavelength} nm</strong>
-      <span>Índice de refracción: <b>{trace.index.toFixed(3)}</b></span>
-      <span>Ángulo de salida: <b>{leaves ? trace.exitAngle.toFixed(1) + '°' : 'no sale (rebota)'}</b></span>
-      <span>Desvío total: <b>{leaves ? Math.abs(trace.deviation).toFixed(1) + '°' : '—'}</b></span>
+      <span>Índice de refracción: <b>{trace.index.toFixed(3).replace('.', ',')}</b></span>
+      <span>Ángulo de salida: <b>{leaves ? trace.exitAngle.toFixed(1).replace('.', ',') + '°' : 'no sale (rebota)'}</b></span>
+      <span>Desvío total: <b>{leaves ? Math.abs(trace.deviation).toFixed(1).replace('.', ',') + '°' : '—'}</b></span>
       {settings.newtonPair && <span className="pnote">{recombines ? 'Con dos prismas los colores salen paralelos y se juntan: luz blanca otra vez.' : 'Gira un prisma con el mouse o el dedo hasta que los colores salgan paralelos.'}</span>}
     </div>
   )
@@ -28,9 +29,8 @@ export function PrismControls({ settings, onChange, onWavelength, onReset }) {
       <div className="pfields">
         <div>
           <label htmlFor="pm">Material</label>
-          <select id="pm" value={settings.material} onChange={(event) => onChange({ material: +event.target.value })}>
-            {PRISM_MATERIALS.map((material, i) => <option key={material.id} value={i}>{material.name} (n = {material.index})</option>)}
-          </select>
+          <Select id="pm" value={settings.material} onChange={(material) => onChange({ material })}
+            options={PRISM_MATERIALS.map((material, i) => ({ value: i, label: material.name, detail: 'n = ' + String(material.index).replace('.', ',') }))} />
         </div>
         <Slider id="pa" label="Ángulo del vértice" display={settings.apexAngle + '°'} min="30" max="75" step="1" value={settings.apexAngle} onChange={(event) => onChange({ apexAngle: +event.target.value })} />
         <Slider id="pr" label="Giro del prisma" display={settings.rotation + '°'} min="-60" max="60" step="0.5" value={Math.max(-60, Math.min(60, settings.rotation))} onChange={(event) => onChange({ rotation: +event.target.value })} />
